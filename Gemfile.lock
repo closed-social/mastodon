@@ -208,7 +208,7 @@ GEM
     erubi (1.10.0)
     et-orbi (1.2.4)
       tzinfo
-    excon (0.76.0)
+    excon (0.78.1)
     fabrication (2.21.1)
     faker (2.15.1)
       i18n (>= 1.6, < 2)
