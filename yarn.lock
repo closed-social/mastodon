@@ -2965,9 +2965,9 @@ clone-deep@^4.0.1:
     kind-of "^6.0.2"
     shallow-clone "^3.0.0"
 
-clone@^2.1.1:
+clone@^2.1.2:
   version "2.1.2"
-  resolved "https://registry.npm.taobao.org/clone/download/clone-2.1.2.tgz#1b7f4b9f591f1e8f83670401600345a02887435f"
+  resolved "https://registry.yarnpkg.com/clone/-/clone-2.1.2.tgz#1b7f4b9f591f1e8f83670401600345a02887435f"
   integrity sha1-G39Ln1kfHo+DZwQBYANFoCiHQ18=
 
 co@^4.6.0:
@@ -3209,7 +3209,7 @@ core-js-pure@^3.0.0:
   resolved "https://registry.yarnpkg.com/core-js-pure/-/core-js-pure-3.6.5.tgz#c79e75f5e38dbc85a662d91eea52b8256d53b813"
   integrity sha512-lacdXOimsiD0QyNf9BC/mxivNJ/ybBGJXQFKzRekp1WTHoVUWsUHEn+2T8GJAzzIhyOuXA+gOxCVN3l+5PLPUA==
 
-core-js@^2.4.0, core-js@^2.5.0:
+core-js@^2.4.0:
   version "2.6.11"
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.6.11.tgz#38831469f9922bded8ee21c9dc46985e0399308c"
   integrity sha512-5wjnpaT/3dV+XB4borEsnAYQchn00XSgTAWKDkEqv+K8KevjbzmofK6hfJ9TZIlpj2N0xQpazy7PiRQiWHqzWg==
@@ -3540,15 +3540,15 @@ cyclist@^1.0.1:
   resolved "https://registry.yarnpkg.com/cyclist/-/cyclist-1.0.1.tgz#596e9698fd0c80e12038c2b82d6eb1b35b6224d9"
   integrity sha1-WW6WmP0MgOEgOMK4LW6xs1tiJNk=
 
-d3-ease@^1.0.3:
-  version "1.0.6"
-  resolved "https://registry.yarnpkg.com/d3-ease/-/d3-ease-1.0.6.tgz#ebdb6da22dfac0a22222f2d4da06f66c416a0ec0"
-  integrity sha512-SZ/lVU7LRXafqp7XtIcBdxnWl8yyLpgOmzAk0mWBI9gXNzLDx5ybZgnRbH9dN/yY5tzVBqCQ9avltSnqVwessQ==
+d3-ease@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/d3-ease/-/d3-ease-2.0.0.tgz#fd1762bfca00dae4bacea504b1d628ff290ac563"
+  integrity sha512-68/n9JWarxXkOWMshcT5IcjbB+agblQUaIsbnXmrzejn2O82n3p2A9R2zEB9HIEFWKFwPAEDDN8gR0VdSAyyAQ==
 
-d3-hierarchy@^1.1.5:
-  version "1.1.9"
-  resolved "https://registry.yarnpkg.com/d3-hierarchy/-/d3-hierarchy-1.1.9.tgz#2f6bee24caaea43f8dc37545fa01628559647a83"
-  integrity sha512-j8tPxlqh1srJHAtxfvOUwKNYJkQuBFdM1+JAUfq6xqH5eAqf93L7oG1NVqDa4CpFZNvnNKtCYEUC8KY9yEn9lQ==
+d3-hierarchy@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/d3-hierarchy/-/d3-hierarchy-2.0.0.tgz#dab88a58ca3e7a1bc6cab390e89667fcc6d20218"
+  integrity sha512-SwIdqM3HxQX2214EG9GTjgmCc/mbSx4mQBn+DuEETubhOw6/U3fmnji4uCVrmzOydMHSO1nZle5gh6HB/wdOzw==
 
 d@1, d@^1.0.1:
   version "1.0.1"
@@ -9021,15 +9021,14 @@ react-transition-group@^4.3.0:
     loose-envify "^1.4.0"
     prop-types "^15.6.2"
 
-react-tree-graph@^4.0.1:
-  version "4.1.1"
-  resolved "https://registry.yarnpkg.com/react-tree-graph/-/react-tree-graph-4.1.1.tgz#1b0abd49ab3dfabe08392e5539a60bb03f56005a"
-  integrity sha512-ATuRmH+1Bw2QV36EwYwek7VRB5+Xp4gp5DmXzX/JuvVUdgTgEq8lvFj7PPm8lQRjyy6ebS8rc8+lSD1Bx6QRWA==
+react-tree-graph@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/react-tree-graph/-/react-tree-graph-6.0.0.tgz#a94509e0fdbce0cd481d02f8f11e1a705bfa9466"
+  integrity sha512-gYRRdm7DMyVU0VDSFcCrfyi7GpGJa3VVIRD+AypITCfEmDzK7jEde9QPYeHDFOIjxhX7WoceO9KknHv9kXNQLQ==
   dependencies:
-    clone "^2.1.1"
-    core-js "^2.5.0"
-    d3-ease "^1.0.3"
-    d3-hierarchy "^1.1.5"
+    clone "^2.1.2"
+    d3-ease "^2.0.0"
+    d3-hierarchy "^2.0.0"
     prop-types "^15.5.7"
 
 react@^16.14.0:
