@@ -146,7 +146,7 @@ export const StatusActionBar: React.FC<StatusActionBarProps> = ({
   statusId,
   contextType,
   withDismiss,
-  withCounters,
+  withCounters = true,
   scrollKey,
 }) => {
   const status = useStatus(statusId);

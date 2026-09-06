@@ -223,7 +223,7 @@ class StatusActionBar extends ImmutablePureComponent {
   };
 
   render () {
-    const { status, statusQuoteState, quotedAccountId, contextType, intl, withDismiss, withCounters, showReplyCount, scrollKey } = this.props;
+    const { status, statusQuoteState, quotedAccountId, contextType, intl, withDismiss, withCounters = true, showReplyCount, scrollKey } = this.props;
     const { signedIn, permissions } = this.props.identity;
 
     const publicStatus       = ['public', 'unlisted'].includes(status.get('visibility'));
@@ -360,7 +360,6 @@ class StatusActionBar extends ImmutablePureComponent {
             iconComponent={replyIconComponent}
             onClick={this.handleReplyClick}
             counter={showReplyCount ? status.get('replies_count') : undefined}
-            obfuscateCount
           />
         </div>
         <div className='status__action-bar__button-wrapper'>
