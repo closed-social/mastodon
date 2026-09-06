@@ -30,6 +30,7 @@ interface InitialStateMeta {
   mascot: string | null;
   me?: string;
   moved_to_account_id?: string;
+  news_bot_id?: string | null;
   owner?: string;
   profile_directory: boolean;
   registrations_open: boolean;
@@ -155,6 +156,7 @@ export const limitedFederationMode = getMeta('limited_federation_mode');
 export const mascot = getMeta('mascot');
 export const me = getMeta('me');
 export const movedToAccountId = getMeta('moved_to_account_id');
+export const newsBotId = getMeta('news_bot_id');
 export const owner = getMeta('owner');
 export const profile_directory = getMeta('profile_directory');
 export const reduceMotion = getMeta('reduce_motion');
