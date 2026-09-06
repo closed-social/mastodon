@@ -141,8 +141,8 @@ export const Profile: React.FC<{
       }),
     )
       .then(() => {
-        history.push('/home');
         dispatch(closeOnboarding());
+        history.push('/');
         return '';
       })
       // eslint-disable-next-line @typescript-eslint/use-unknown-in-catch-callback-variable
