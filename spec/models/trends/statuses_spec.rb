@@ -15,8 +15,8 @@ RSpec.describe Trends::Statuses do
     let!(:status_bar) { Fabricate(:status, text: 'Bar', language: 'en', trendable: true, created_at: today) }
 
     before do
-      default_threshold_value.times { reblog(status_foo, today) }
-      default_threshold_value.times { reblog(status_bar, today) }
+      threshold_value.times { reblog(status_foo, today) }
+      threshold_value.times { reblog(status_bar, today) }
 
       subject.refresh(today)
     end
@@ -117,11 +117,11 @@ RSpec.describe Trends::Statuses do
     let!(:untrendable_quote) { Fabricate(:status, text: 'Untrendable quote!', language: 'en', trendable: true, created_at: today, quote: Quote.new(state: :accepted, quoted_status: untrendable)) }
 
     before do
-      default_threshold_value.times { reblog(status_foo, today) }
-      default_threshold_value.times { reblog(status_bar, today) }
-      default_threshold_value.times { reblog(untrendable, today) }
-      default_threshold_value.times { reblog(untrendable_quote, today) }
-      (default_threshold_value - 1).times { reblog(status_baz, today) }
+      threshold_value.times { reblog(status_foo, today) }
+      threshold_value.times { reblog(status_bar, today) }
+      threshold_value.times { reblog(untrendable, today) }
+      threshold_value.times { reblog(untrendable_quote, today) }
+      (threshold_value - 1).times { reblog(status_baz, today) }
     end
 
     context 'when status trends are refreshed' do
@@ -152,7 +152,7 @@ RSpec.describe Trends::Statuses do
     subject.add(status, reblog.account_id, at_time)
   end
 
-  def default_threshold_value
-    described_class.default_options[:threshold]
+  def threshold_value
+    subject.options[:threshold]
   end
 end
