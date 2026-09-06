@@ -4,14 +4,16 @@ import { defineMessages, useIntl } from 'react-intl';
 
 import { useHistory } from 'react-router-dom';
 
+import ChatBubbleIcon from '@/material-icons/400-24px/chat_bubble.svg?react';
+import ForumIcon from '@/material-icons/400-24px/forum.svg?react';
 import OpenInNewIcon from '@/material-icons/400-24px/open_in_new.svg?react';
-import ReplyIcon from '@/material-icons/400-24px/reply.svg?react';
-import ReplyAllIcon from '@/material-icons/400-24px/reply_all.svg?react';
-import StarIcon from '@/material-icons/400-24px/star-fill.svg?react';
-import StarBorderIcon from '@/material-icons/400-24px/star.svg?react';
 import { replyCompose } from 'flavours/glitch/actions/compose';
 import { toggleFavourite } from 'flavours/glitch/actions/interactions';
 import { openModal } from 'flavours/glitch/actions/modal';
+import {
+  HeartFillIcon,
+  HeartIcon,
+} from 'flavours/glitch/components/heart_icon';
 import { IconButton } from 'flavours/glitch/components/icon_button';
 import { BoostButton } from 'flavours/glitch/components/status/boost_button';
 import { useIdentity } from 'flavours/glitch/identity_context';
@@ -142,12 +144,12 @@ export const Footer: React.FC<{
   let replyIcon, replyIconComponent, replyTitle;
 
   if (status.get('in_reply_to_id', null) === null) {
-    replyIcon = 'reply';
-    replyIconComponent = ReplyIcon;
+    replyIcon = 'comment';
+    replyIconComponent = ChatBubbleIcon;
     replyTitle = intl.formatMessage(messages.reply);
   } else {
-    replyIcon = 'reply-all';
-    replyIconComponent = ReplyAllIcon;
+    replyIcon = 'comments';
+    replyIconComponent = ForumIcon;
     replyTitle = intl.formatMessage(messages.replyAll);
   }
 
@@ -163,13 +165,13 @@ export const Footer: React.FC<{
         icon={
           status.get('in_reply_to_account_id') ===
           status.getIn(['account', 'id'])
-            ? 'reply'
+            ? 'comment'
             : replyIcon
         }
         iconComponent={
           status.get('in_reply_to_account_id') ===
           status.getIn(['account', 'id'])
-            ? ReplyIcon
+            ? ChatBubbleIcon
             : replyIconComponent
         }
         onClick={handleReplyClick}
@@ -186,8 +188,8 @@ export const Footer: React.FC<{
         animate
         active={status.get('favourited') as boolean}
         title={favouriteTitle}
-        icon='star'
-        iconComponent={status.get('favourited') ? StarIcon : StarBorderIcon}
+        icon='heart'
+        iconComponent={status.get('favourited') ? HeartFillIcon : HeartIcon}
         onClick={handleFavouriteClick}
         counter={status.get('favourites_count') as number}
       />

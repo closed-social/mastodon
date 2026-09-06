@@ -67,7 +67,7 @@ const initialState = ImmutableMap({
       status: true,
       update: true,
       collections: true,
-      'admin.sign_up': false,
+      'admin.sign_up': true,
       'admin.report': true,
     }),
 
@@ -82,7 +82,7 @@ const initialState = ImmutableMap({
       status: true,
       update: true,
       collections: true,
-      'admin.sign_up': false,
+      'admin.sign_up': true,
       'admin.report': true,
     }),
 

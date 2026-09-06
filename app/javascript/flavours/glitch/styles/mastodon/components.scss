@@ -2683,7 +2683,7 @@ a.account__display-name {
     height: 18px;
   }
 
-  .icon-star {
+  .icon-heart {
     color: var(--color-text-favourite-highlight);
   }
 
@@ -2705,15 +2705,15 @@ a.account__display-name {
 .no-reduce-motion .icon-button.star-icon {
   &.activate {
     & > .icon {
-      animation: spring-rotate-in 1s linear;
-      transform-origin: 50% 52%;
+      animation: favourite-pop-in 300ms ease-out;
+      transform-origin: center;
     }
   }
 
   &.deactivate {
     & > .icon {
-      animation: spring-rotate-out 1s linear;
-      transform-origin: 50% 52%;
+      animation: favourite-pop-out 200ms ease-out;
+      transform-origin: center;
     }
   }
 }
@@ -5101,47 +5101,25 @@ a.status-card {
   }
 }
 
-@keyframes spring-rotate-in {
-  0% {
-    transform: rotate(0deg);
-  }
-
-  30% {
-    transform: rotate(-484.8deg);
-  }
-
-  60% {
-    transform: rotate(-316.7deg);
-  }
-
-  90% {
-    transform: rotate(-375deg);
-  }
-
+@keyframes favourite-pop-in {
+  0%,
   100% {
-    transform: rotate(-360deg);
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.2);
   }
 }
 
-@keyframes spring-rotate-out {
-  0% {
-    transform: rotate(-360deg);
-  }
-
-  30% {
-    transform: rotate(124.8deg);
-  }
-
-  60% {
-    transform: rotate(-43.27deg);
-  }
-
-  90% {
-    transform: rotate(15deg);
-  }
-
+@keyframes favourite-pop-out {
+  0%,
   100% {
-    transform: rotate(0deg);
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(0.85);
   }
 }
 
@@ -10841,7 +10819,7 @@ noscript {
   }
 
   &--moderation-warning &__icon {
-    color: var(--color-text-bookmark-highlight);
+    color: var(--color-text-error);
   }
 
   &--follow-request &__actions {

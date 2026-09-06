@@ -28,8 +28,6 @@ import PersonAddActiveIcon from '@/material-icons/400-24px/person_add-fill.svg?r
 import PersonAddIcon from '@/material-icons/400-24px/person_add.svg?react';
 import PublicIcon from '@/material-icons/400-24px/public.svg?react';
 import SettingsIcon from '@/material-icons/400-24px/settings.svg?react';
-import StarActiveIcon from '@/material-icons/400-24px/star-fill.svg?react';
-import StarIcon from '@/material-icons/400-24px/star.svg?react';
 import TrendingUpIcon from '@/material-icons/400-24px/trending_up.svg?react';
 import { fetchFollowRequests } from 'flavours/glitch/actions/accounts';
 import { openModal } from 'flavours/glitch/actions/modal';
@@ -38,6 +36,10 @@ import {
   closeNavigation,
 } from 'flavours/glitch/actions/navigation';
 import { Account } from 'flavours/glitch/components/account';
+import {
+  HeartFillIcon,
+  HeartIcon,
+} from 'flavours/glitch/components/heart_icon';
 import { IconWithBadge } from 'flavours/glitch/components/icon_with_badge';
 import { Search } from 'flavours/glitch/features/compose/components/search';
 import { ColumnLink } from 'flavours/glitch/features/ui/components/column_link';
@@ -369,9 +371,9 @@ export const NavigationPanel: React.FC<{ multiColumn?: boolean }> = ({
               <ColumnLink
                 transparent
                 to='/favourites'
-                icon='star'
-                iconComponent={StarIcon}
-                activeIconComponent={StarActiveIcon}
+                icon='heart'
+                iconComponent={HeartIcon}
+                activeIconComponent={HeartFillIcon}
                 text={intl.formatMessage(messages.favourites)}
               />
             </li>

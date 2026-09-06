@@ -20,8 +20,8 @@ import {
   useAppDispatch,
   useAppSelector,
 } from '@/flavours/glitch/store';
+import ChatBubbleIcon from '@/material-icons/400-24px/chat_bubble.svg?react';
 import MoreHorizIcon from '@/material-icons/400-24px/more_horiz.svg?react';
-import ReplyIcon from '@/material-icons/400-24px/reply.svg?react';
 import { replyCompose } from 'flavours/glitch/actions/compose';
 import {
   markConversationRead,
@@ -269,8 +269,8 @@ export const Conversation: React.FC<{
             <IconButton
               className='status__action-bar-button'
               title={intl.formatMessage(messages.reply)}
-              icon='reply'
-              iconComponent={ReplyIcon}
+              icon='comment'
+              iconComponent={ChatBubbleIcon}
               onClick={handleReply}
             />
 

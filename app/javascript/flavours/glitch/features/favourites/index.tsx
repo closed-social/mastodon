@@ -18,13 +18,13 @@ import {
 import { useAppDispatch, useAppSelector } from '@/flavours/glitch/store';
 import { isRedesignEnabled } from '@/flavours/glitch/utils/environment';
 import RefreshIcon from '@/material-icons/400-24px/refresh.svg?react';
-import StarIcon from '@/material-icons/400-24px/star-fill.svg?react';
 import {
   fetchFavourites,
   expandFavourites,
 } from 'flavours/glitch/actions/interactions';
 import { Account } from 'flavours/glitch/components/account';
 import { Column } from 'flavours/glitch/components/column';
+import { HeartFillIcon } from 'flavours/glitch/components/heart_icon';
 import { Icon } from 'flavours/glitch/components/icon';
 import { LoadingIndicator } from 'flavours/glitch/components/loading_indicator';
 import ScrollableList from 'flavours/glitch/components/scrollable_list';
@@ -104,8 +104,8 @@ const Favourites: React.FC<{ multiColumn?: boolean }> = ({ multiColumn }) => {
         />
       ) : (
         <LegacyColumnHeader
-          icon='star'
-          iconComponent={StarIcon}
+          icon='heart'
+          iconComponent={HeartFillIcon}
           title={intl.formatMessage(messages.heading)}
           scrollTopOnClick
           showBackButton

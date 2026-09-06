@@ -45,11 +45,13 @@ import type { AppDispatch } from '@/flavours/glitch/store';
 import { useAppDispatch, useAppSelector } from '@/flavours/glitch/store';
 import BookmarkIcon from '@/material-icons/400-24px/bookmark-fill.svg?react';
 import BookmarkBorderIcon from '@/material-icons/400-24px/bookmark.svg?react';
+import ChatBubbleIcon from '@/material-icons/400-24px/chat_bubble.svg?react';
+import ForumIcon from '@/material-icons/400-24px/forum.svg?react';
 import MoreHorizIcon from '@/material-icons/400-24px/more_horiz.svg?react';
-import ReplyIcon from '@/material-icons/400-24px/reply.svg?react';
-import ReplyAllIcon from '@/material-icons/400-24px/reply_all.svg?react';
-import StarIcon from '@/material-icons/400-24px/star-fill.svg?react';
-import StarBorderIcon from '@/material-icons/400-24px/star.svg?react';
+import {
+  HeartFillIcon,
+  HeartIcon,
+} from 'flavours/glitch/components/heart_icon';
 
 import { Dropdown } from '../dropdown_menu';
 import { IconButton } from '../icon_button';
@@ -176,8 +178,8 @@ export const StatusActionBar: React.FC<StatusActionBarProps> = ({
   const replyTitle = isReply
     ? intl.formatMessage(messages.reply)
     : intl.formatMessage(messages.replyAll);
-  const replyIcon = isReply ? 'reply' : 'reply-all';
-  const replyIconComponent = isReply ? ReplyIcon : ReplyAllIcon;
+  const replyIcon = isReply ? 'comment' : 'comments';
+  const replyIconComponent = isReply ? ChatBubbleIcon : ForumIcon;
 
   const bookmarkTitle = intl.formatMessage(
     status.bookmarked ? messages.removeBookmark : messages.bookmark,
@@ -211,8 +213,8 @@ export const StatusActionBar: React.FC<StatusActionBarProps> = ({
           animate
           active={status.favourited}
           title={favouriteTitle}
-          icon='star'
-          iconComponent={status.favourited ? StarIcon : StarBorderIcon}
+          icon='heart'
+          iconComponent={status.favourited ? HeartFillIcon : HeartIcon}
           onClick={handleFavouriteClick}
           counter={withCounters ? status.favourites_count : undefined}
         />

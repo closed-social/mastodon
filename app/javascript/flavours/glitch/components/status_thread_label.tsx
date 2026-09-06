@@ -1,6 +1,6 @@
 import { FormattedMessage } from 'react-intl';
 
-import ReplyIcon from '@/material-icons/400-24px/reply.svg?react';
+import ChatBubbleIcon from '@/material-icons/400-24px/chat_bubble.svg?react';
 import { Icon } from 'flavours/glitch/components/icon';
 import { useAppSelector } from 'flavours/glitch/store';
 
@@ -49,7 +49,7 @@ export const StatusThreadLabel: React.FC<{
   return (
     <div className='status__prepend'>
       <div className='status__prepend__icon'>
-        <Icon id='reply' icon={ReplyIcon} />
+        <Icon id='comment' icon={ChatBubbleIcon} />
       </div>
       <span>{label}</span>
     </div>

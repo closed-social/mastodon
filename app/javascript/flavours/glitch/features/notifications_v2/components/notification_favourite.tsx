@@ -2,7 +2,7 @@ import { FormattedMessage } from 'react-intl';
 
 import { Link } from 'react-router-dom';
 
-import StarIcon from '@/material-icons/400-24px/star-fill.svg?react';
+import { HeartFillIcon } from 'flavours/glitch/components/heart_icon';
 import type { NotificationGroupFavourite } from 'flavours/glitch/models/notification_group';
 import { useAppSelector } from 'flavours/glitch/store';
 
@@ -79,8 +79,8 @@ export const NotificationFavourite: React.FC<{
   return (
     <NotificationGroupWithStatus
       type='favourite'
-      icon={StarIcon}
-      iconId='star'
+      icon={HeartFillIcon}
+      iconId='heart'
       accountIds={notification.sampleAccountIds}
       statusId={notification.statusId}
       timestamp={notification.latest_page_notification_at}

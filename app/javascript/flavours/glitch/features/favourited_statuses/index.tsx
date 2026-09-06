@@ -12,7 +12,6 @@ import {
 } from '@/flavours/glitch/components/column_header';
 import { MultiColumnMenuItems } from '@/flavours/glitch/components/column_header/multicolumn_settings';
 import { isRedesignEnabled } from '@/flavours/glitch/utils/environment';
-import StarIcon from '@/material-icons/400-24px/star-fill.svg?react';
 import {
   addColumn,
   removeColumn,
@@ -22,6 +21,7 @@ import {
   fetchFavouritedStatuses,
   expandFavouritedStatuses,
 } from 'flavours/glitch/actions/favourites';
+import { HeartFillIcon } from 'flavours/glitch/components/heart_icon';
 import StatusList from 'flavours/glitch/components/status_list';
 import { getStatusList } from 'flavours/glitch/selectors';
 import { useAppDispatch, useAppSelector } from 'flavours/glitch/store';
@@ -108,8 +108,8 @@ const Favourites: React.FC<{ columnId: string; multiColumn: boolean }> = ({
         />
       ) : (
         <LegacyColumnHeader
-          icon='star'
-          iconComponent={StarIcon}
+          icon='heart'
+          iconComponent={HeartFillIcon}
           title={intl.formatMessage(messages.heading)}
           onPin={handlePin}
           onMove={handleMove}

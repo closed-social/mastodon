@@ -9,11 +9,10 @@ import { connect } from 'react-redux';
 import BookmarkIcon from '@/material-icons/400-24px/bookmark-fill.svg?react';
 import BookmarkBorderIcon from '@/material-icons/400-24px/bookmark.svg?react';
 import MoreHorizIcon from '@/material-icons/400-24px/more_horiz.svg?react';
-import ReplyIcon from '@/material-icons/400-24px/reply.svg?react';
-import ReplyAllIcon from '@/material-icons/400-24px/reply_all.svg?react';
-import StarIcon from '@/material-icons/400-24px/star-fill.svg?react';
-import StarBorderIcon from '@/material-icons/400-24px/star.svg?react';
+import ChatBubbleIcon from '@/material-icons/400-24px/chat_bubble.svg?react';
+import ForumIcon from '@/material-icons/400-24px/forum.svg?react';
 import { injectIntl } from '@/flavours/glitch/components/intl';
+import { HeartFillIcon, HeartIcon } from 'flavours/glitch/components/heart_icon';
 import { identityContextPropShape, withIdentity } from 'flavours/glitch/identity_context';
 import { PERMISSION_MANAGE_USERS, PERMISSION_MANAGE_FEDERATION } from 'flavours/glitch/permissions';
 import { accountAdminLink, statusAdminLink } from 'flavours/glitch/utils/backend_links';
@@ -266,11 +265,11 @@ class ActionBar extends PureComponent {
     let replyIconComponent;
 
     if (status.get('in_reply_to_id', null) === null) {
-      replyIcon = 'reply';
-      replyIconComponent = ReplyIcon;
+      replyIcon = 'comment';
+      replyIconComponent = ChatBubbleIcon;
     } else {
-      replyIcon = 'reply-all';
-      replyIconComponent = ReplyAllIcon;
+      replyIcon = 'comments';
+      replyIconComponent = ForumIcon;
     }
 
     const bookmarkTitle = intl.formatMessage(status.get('bookmarked') ? messages.removeBookmark : messages.bookmark);
@@ -282,7 +281,7 @@ class ActionBar extends PureComponent {
         <div className='detailed-status__button'>
           <BoostButton statusId={status.get('id')} />
         </div>
-        <div className='detailed-status__button'><IconButton className='star-icon' animate active={status.get('favourited')} title={favouriteTitle} icon='star' iconComponent={status.get('favourited') ? StarIcon : StarBorderIcon} onClick={this.handleFavouriteClick} /></div>
+        <div className='detailed-status__button'><IconButton className='star-icon' animate active={status.get('favourited')} title={favouriteTitle} icon='heart' iconComponent={status.get('favourited') ? HeartFillIcon : HeartIcon} onClick={this.handleFavouriteClick} /></div>
         <div className='detailed-status__button'><IconButton className='bookmark-icon' disabled={!signedIn} active={status.get('bookmarked')} title={bookmarkTitle} icon='bookmark' iconComponent={status.get('bookmarked') ? BookmarkIcon : BookmarkBorderIcon} onClick={this.handleBookmarkClick} /></div>
 
         <div className='detailed-status__action-bar-dropdown'>
