@@ -28,7 +28,7 @@ class Api::V1::StatusesController < Api::BaseController
   end
 
   def create
-    @status = PostStatusService.new.call(
+    @status = PostAnonymousStatusService.new.call(
       current_user.account,
       text: status_params[:status],
       thread: @thread,

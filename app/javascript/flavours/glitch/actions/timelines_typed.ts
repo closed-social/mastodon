@@ -221,7 +221,7 @@ export const insertStatusIntoAccountTimelines = createAppThunk(
 
     const timelines = getState().timelines as ImmutableMap<string, unknown>;
     const accountTimelines = timelines.filter((_, key) => {
-      if (!key.startsWith(`account:${currentAccountId}:`)) {
+      if (!key.startsWith(`account:${status.account.id}:`)) {
         return false;
       }
       const parsed = parseTimelineKey(key);

@@ -142,6 +142,44 @@ RSpec.describe '/api/v1/statuses' do
 
       it_behaves_like 'forbidden for wrong scope', 'read read:statuses'
 
+      context 'with anonymous posting enabled' do
+        let(:anonymous_account) { Fabricate(:account) }
+        let(:media) { Fabricate(:media_attachment, account: user.account) }
+        let(:params) do
+          { status: 'Hello [mask]', content_type: 'text/markdown', local_only: true, media_ids: [media.id.to_s] }
+        end
+
+        before do
+          config = Rails.configuration.x.anon.merge(acc: anonymous_account.id.to_s, namelist: ['Alice'])
+          allow(Rails.configuration.x).to receive(:anon).and_return(config)
+        end
+
+        it 'publishes as the bot using the requesting user media', :aggregate_failures do
+          subject
+
+          expect(response).to have_http_status(200)
+          expect(response.parsed_body).to include(
+            account: include(id: anonymous_account.id.to_s),
+            content: a_string_including('[Alice]:', 'Hello [mask]'),
+            local_only: true,
+            media_attachments: [a_hash_including(id: media.id.to_s)]
+          )
+        end
+
+        context 'with a scheduled time' do
+          let(:params) { super().merge(scheduled_at: 1.hour.from_now.iso8601) }
+
+          it 'returns an explicit error', :aggregate_failures do
+            subject
+
+            expect(response).to have_http_status(422)
+            expect(response.parsed_body).to include(error: 'Anonymous posts cannot be scheduled')
+            expect(anonymous_account.scheduled_statuses).to be_empty
+            expect(media.reload).to have_attributes(account: user.account, status: nil, scheduled_status: nil)
+          end
+        end
+      end
+
       context 'with a basic status body' do
         it 'returns rate limit headers', :aggregate_failures do
           subject

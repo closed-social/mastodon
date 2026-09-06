@@ -36,12 +36,14 @@ class PostStatusService < BaseService
   # @option [Enumerable] :media_ids Optional array of media IDs to attach
   # @option [Doorkeeper::Application] :application
   # @option [String] :idempotency Optional idempotency key
+  # @option [Account] :media_owner Account that uploaded the media for an immediate post
   # @option [Boolean] :with_rate_limit
   # @option [Enumerable] :allowed_mentions Optional array of expected mentioned account IDs, raises `UnexpectedMentionsError` if unexpected accounts end up in mentions
   # @return [Status]
   def call(account, options = {})
     @account     = account
     @options     = options
+    @media_owner = @options[:media_owner] || account
     @text        = @options[:text] || ''
     @in_reply_to = @options[:thread]
     @quoted_status = @options[:quoted_status]
@@ -112,6 +114,7 @@ class PostStatusService < BaseService
     # the media attachments when the status is created
     ApplicationRecord.transaction do
       @status.save!
+      @media.each { |media| media.update!(account: @account) } if @media_owner != @account
     end
   end
 
@@ -208,7 +211,7 @@ class PostStatusService < BaseService
 
     raise Mastodon::ValidationError, I18n.t('media_attachments.validations.too_many') if @options[:media_ids].size > Status::MEDIA_ATTACHMENTS_LIMIT
 
-    @media = @account.media_attachments.where(status_id: nil).where(id: @options[:media_ids].take(Status::MEDIA_ATTACHMENTS_LIMIT).map(&:to_i))
+    @media = @media_owner.media_attachments.where(status_id: nil).where(id: @options[:media_ids].take(Status::MEDIA_ATTACHMENTS_LIMIT).map(&:to_i))
 
     not_found_ids = @options[:media_ids].map(&:to_i) - @media.map(&:id)
     raise Mastodon::ValidationError, I18n.t('media_attachments.validations.not_found', ids: not_found_ids.join(', ')) if not_found_ids.any?
