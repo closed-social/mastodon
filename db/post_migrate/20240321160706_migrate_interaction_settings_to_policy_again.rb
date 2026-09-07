@@ -11,7 +11,7 @@ class MigrateInteractionSettingsToPolicyAgain < ActiveRecord::Migration[7.1]
   class NotificationPolicy < ApplicationRecord; end
 
   def up
-    User.includes(:notification_policy).in_batches do |users|
+    User.where.not(settings: nil).includes(:notification_policy).in_batches do |users|
       NotificationPolicy.insert_all(users.filter_map { |user| policy_for_user(user) })
     end
   end
