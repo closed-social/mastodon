@@ -1,0 +1,38 @@
+@use '@/flavours/glitch/styles/application';
+
+// Restore the main Mastodon 4.1 dark colors; map newer surfaces to that palette.
+html[data-color-scheme='dark'],
+html:not([data-color-scheme]) {
+  --color-bg-primary: #282c37;
+  --color-bg-secondary: #313543;
+  --color-bg-tertiary: #393f4f;
+  --color-bg-blend: #191b22;
+  --color-bg-highlight: rgb(255 255 255 / 5%);
+  --color-text-primary: #fff;
+  --color-text-secondary: #9baec8;
+  --color-text-tertiary: #606984;
+  --color-text-inverted: #282c37;
+  --color-text-status-links: #8c8dff;
+  --color-text-brand: #8c8dff;
+  --color-text-brand-soft: #d9e1e8;
+  --color-text-on-brand-base: #fff;
+  --color-bg-brand-base: #5455ff;
+  --color-bg-brand-base-hover: #6364ff;
+  --color-bg-brand-soft: color-mix(in srgb, #6364ff 20%, #282c37);
+  --color-bg-brand-softest: color-mix(in srgb, #6364ff 8%, #282c37);
+  --color-border-primary: #393f4f;
+  --color-border-strong: #d9e1e8;
+  --color-border-brand: #8c8dff;
+  --color-border-brand-soft: color-mix(in srgb, #6364ff 35%, #282c37);
+  --color-bg-disabled: #393f4f;
+  --color-text-disabled: #606984;
+  --color-text-on-disabled: #9baec8;
+}
+
+// Keep stronger separators in high-contrast mode.
+html[data-color-scheme='dark'][data-contrast='high'],
+html:not([data-color-scheme])[data-contrast='high'] {
+  --color-text-primary: #fff;
+  --color-text-status-links: #8c8dff;
+  --color-border-primary: #9baec8;
+}
