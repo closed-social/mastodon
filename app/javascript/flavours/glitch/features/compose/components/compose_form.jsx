@@ -26,12 +26,10 @@ import { CharacterCounter } from './character_counter';
 import { ContentTypeButton } from './content_type_button';
 import { EditIndicator } from './edit_indicator';
 import { FederationButton } from './federation_button';
-import { LanguageDropdown } from './language_dropdown';
 import { NavigationBar } from './navigation_bar';
 import { PollForm } from "./poll_form";
 import { ReplyIndicator } from './reply_indicator';
 import { SecondaryPrivacyButton } from './secondary_privacy_button';
-import { ThreadModeButton } from './thread_mode_button';
 import { UploadForm } from './upload_form';
 import { Warning } from './warning';
 import { ComposeQuotedStatus } from './quoted_post';
@@ -294,7 +292,6 @@ class ComposeForm extends ImmutablePureComponent {
 
           <div className='compose-form__dropdowns'>
             <VisibilityButton disabled={this.props.isEditing} />
-            <LanguageDropdown />
           </div>
 
           {this.props.spoiler && (
@@ -355,7 +352,6 @@ class ComposeForm extends ImmutablePureComponent {
                 <ContentTypeButton />
                 <EmojiPickerDropdown onPickEmoji={this.handleEmojiPick} />
                 <FederationButton />
-                <ThreadModeButton />
                 <CharacterCounter max={maxChars} text={this.getFulltextForCharacterCounting()} />
               </div>
 

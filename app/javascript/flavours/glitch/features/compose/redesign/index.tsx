@@ -27,7 +27,6 @@ import type { OnEmojiPick } from './emoji';
 import { ComposeFooter } from './footer';
 import { ComposeFormHeader } from './header';
 import { ComposeHints } from './hints';
-import { LanguageButton } from './language';
 import { ComposeReply } from './reply';
 import {
   selectComposeCanSubmit,
@@ -80,8 +79,6 @@ export const RedesignComposeForm: React.FC<
 
       <div className={classes.toolbar}>
         <ComposeVisibility className={classes.flexGrowWrap} />
-
-        <LanguageButton />
 
         <ToggleButton
           size='sm'
