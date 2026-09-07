@@ -23,8 +23,8 @@ export const NavigationHeader: React.FC<{
           </span>
           <span className={classes.poweredBy}>
             <FormattedMessage
-              id='navigation_bar.powered_by_mastodon'
-              defaultMessage='powered by {logo}Mastodon'
+              id='navigation_bar.powered_by_closedsocial'
+              defaultMessage='powered by {logo}Closed-social'
               values={{
                 logo: <IconLogo role='presentation' />,
               }}

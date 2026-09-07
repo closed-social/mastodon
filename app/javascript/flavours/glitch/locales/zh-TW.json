@@ -1,5 +1,6 @@
 {
-  "about.fork_disclaimer": "Glitch-soc 是從 Mastodon 分支出來的自由開源軟體。",
+  "about.closed_social": "<link>閉社</link>成員站台",
+  "about.fork_disclaimer": "閉社 是從 Mastodon 分支出來的自由開源軟體。",
   "account.disclaimer_full": "下面的資訊可能不完全反映使用者的個人資料。",
   "account.follows": "跟隨",
   "account.suspended_disclaimer_full": "使用者已被管理者停權。",
@@ -41,6 +42,7 @@
   "keyboard_shortcuts.secondary_toot": "使用次要隱私設定來發布貼文",
   "moved_to_warning": "此帳戶已標記為移至 {moved_to_link}，因此可能不接受新的追隨者。",
   "navigation_bar.app_settings": "應用程式設定",
+  "navigation_bar.powered_by_closedsocial": "由 {logo}閉社提供支援",
   "notifications.column_settings.filter_bar.show_bar": "顯示過濾器",
   "settings.always_show_spoilers_field": "永遠啟用內容警告欄位",
   "settings.close": "關閉",

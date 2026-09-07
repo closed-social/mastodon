@@ -97,7 +97,7 @@ class About extends PureComponent {
             <NavigationFocusTarget as='h1'>
               {isLoading ? <Skeleton width='10ch' /> : domain}
             </NavigationFocusTarget>
-            <p><FormattedMessage id='about.powered_by' defaultMessage='Decentralized social media powered by {mastodon}' values={{ mastodon: <a href='https://joinmastodon.org' className='about__mail' target='_blank' rel='noopener'>Mastodon</a> }} /></p>
+            <p><FormattedMessage id='about.closed_social' defaultMessage='A member server of <link>Closed-social</link>' values={{ link: chunks => <a href='https://closed.social' className='about__mail' target='_blank' rel='noopener'>{chunks}</a> }} /></p>
           </div>
 
           <div className='about__meta'>
@@ -173,7 +173,7 @@ class About extends PureComponent {
           <LinkFooter context='about' />
 
           <div className='about__footer'>
-            <p><FormattedMessage id='about.fork_disclaimer' defaultMessage='Glitch-soc is free open source software forked from Mastodon.' /></p>
+            <p><FormattedMessage id='about.fork_disclaimer' defaultMessage='Closed-social is free open source software forked from Mastodon.' /></p>
             <p><FormattedMessage id='about.disclaimer' defaultMessage='Mastodon is free, open-source software, and a trademark of Mastodon GmbH.' /></p>
           </div>
         </div>

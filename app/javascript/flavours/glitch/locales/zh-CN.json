@@ -1,5 +1,6 @@
 {
-  "about.fork_disclaimer": "Glitch-soc是从Mastodon派生的自由开源软件。",
+  "about.closed_social": "<link>闭社</link>联盟成员",
+  "about.fork_disclaimer": "闭社是从Mastodon派生的自由开源软件。",
   "account.disclaimer_full": "以下信息可能无法完整反映该用户的个人资料。",
   "account.follows": "正在关注",
   "account.suspended_disclaimer_full": "该用户已被管理员封禁。",
@@ -41,6 +42,7 @@
   "keyboard_shortcuts.secondary_toot": "使用另一隐私设置发送嘟文",
   "moved_to_warning": "此账户已被标记为移至 {moved_to_link}，并且似乎没有收到新粉丝。",
   "navigation_bar.app_settings": "应用设置",
+  "navigation_bar.powered_by_closedsocial": "由 {logo}闭社提供支持",
   "notifications.column_settings.filter_bar.show_bar": "显示筛选栏",
   "settings.always_show_spoilers_field": "始终显示内容警告框",
   "settings.close": "关闭",

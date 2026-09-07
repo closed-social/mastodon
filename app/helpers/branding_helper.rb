@@ -12,7 +12,7 @@ module BrandingHelper
 
   def _logo_as_symbol_wordmark
     tag.svg(viewBox: '0 0 261 66', class: 'logo logo--wordmark') do
-      tag.title('Mastodon') +
+      tag.title('Closed-social') +
         tag.use(href: '#logo-symbol-wordmark')
     end
   end
@@ -22,6 +22,6 @@ module BrandingHelper
   end
 
   def render_logo
-    image_tag(frontend_asset_path('images/logo.svg'), alt: 'Mastodon', class: 'logo logo--icon')
+    image_tag(frontend_asset_path('images/logo.svg'), alt: 'Closed-social', class: 'logo logo--icon')
   end
 end
