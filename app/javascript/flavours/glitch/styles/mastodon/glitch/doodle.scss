@@ -8,12 +8,16 @@ $doodle-background: #d9e1e8;
   background: $doodle-background;
   text-align: center;
   line-height: 0; // remove weird gap under canvas
+  overflow: auto;
+
   canvas {
     border: 5px solid $doodle-background;
   }
 }
 
 .doodle-modal__action-bar {
+  flex-wrap: wrap;
+
   .filler {
     flex-grow: 1;
     margin: 0;
