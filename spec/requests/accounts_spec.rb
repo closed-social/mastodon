@@ -263,7 +263,7 @@ RSpec.describe 'Accounts show response' do
               .to have_http_status(200)
               .and have_cacheable_headers.with_vary('Accept, Accept-Language, Cookie')
             expect(response.body).to include(status_tag_for(status_media))
-            expect(response.body).to include(status_tag_for(status_self_reply))
+            expect(response.body).to_not include(status_tag_for(status_self_reply))
             expect(response.body).to include(status_tag_for(status))
             expect(response.body).to_not include(status_tag_for(status_direct))
             expect(response.body).to_not include(status_tag_for(status_private))

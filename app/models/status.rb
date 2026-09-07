@@ -134,7 +134,7 @@ class Status < ApplicationRecord
   scope :remote, -> { where(local: false).where.not(uri: nil) }
   scope :local,  -> { where(local: true).or(where(uri: nil)) }
   scope :with_accounts, ->(ids) { where(id: ids).includes(:account) }
-  scope :without_replies, -> { not_reply.or(reply_to_account) }
+  scope :without_replies, -> { not_reply }
   scope :not_reply, -> { where(reply: false) }
   scope :only_reblogs, -> { where.not(reblog_of_id: nil) }
   scope :only_polls, -> { where.not(poll_id: nil) }

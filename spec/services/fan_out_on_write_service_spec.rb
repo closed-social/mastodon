@@ -68,6 +68,24 @@ RSpec.describe FanOutOnWriteService do
         .to have_received(:publish).with('timeline:public:media', match_json_values(expected_payload))
     end
 
+    context 'when replying to self' do
+      let(:status) { Fabricate(:status, account: alice, thread: Fabricate(:status, account: alice), visibility: visibility) }
+
+      it 'does not broadcast to public streams when replies are hidden' do
+        Setting.show_replies_in_public_timelines = false
+        subject.call(status)
+
+        expect(redis).to_not have_received(:publish).with(a_string_starting_with('timeline:public'), anything)
+      end
+
+      it 'still broadcasts when replies are enabled' do
+        Setting.show_replies_in_public_timelines = true
+        subject.call(status)
+
+        expect(redis).to have_received(:publish).with('timeline:public:local', anything)
+      end
+    end
+
     context 'with silenced_account_ids' do
       it 'calls LocalNotificationWorker with the expected arguments' do
         expect { subject.call(status, silenced_account_ids: [eve.id]) }

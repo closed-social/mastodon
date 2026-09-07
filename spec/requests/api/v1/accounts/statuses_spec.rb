@@ -48,24 +48,21 @@ RSpec.describe 'API V1 Accounts Statuses' do
 
     context 'with exclude replies' do
       let!(:status) { Fabricate(:status, account: user.account) }
-      let!(:status_self_reply) { Fabricate(:status, account: user.account, thread: status) }
 
       before do
+        Fabricate(:status, account: user.account, thread: status) # Reply to self
         Fabricate(:status, account: user.account, thread: Fabricate(:status)) # Reply to another user
         get "/api/v1/accounts/#{user.account.id}/statuses", params: { exclude_replies: true }, headers: headers
       end
 
-      it 'returns posts along with self replies', :aggregate_failures do
+      it 'excludes replies to both self and other accounts', :aggregate_failures do
         expect(response)
           .to have_http_status(200)
         expect(response.content_type)
           .to start_with('application/json')
         expect(response.parsed_body)
-          .to have_attributes(size: 2)
-          .and contain_exactly(
-            include(id: status.id.to_s),
-            include(id: status_self_reply.id.to_s)
-          )
+          .to have_attributes(size: 1)
+          .and contain_exactly(include(id: status.id.to_s))
       end
     end
 
