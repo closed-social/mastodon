@@ -11,7 +11,7 @@ import { RegenerationIndicator } from 'flavours/glitch/components/regeneration_i
 import { InlineFollowSuggestions } from 'flavours/glitch/features/home_timeline/components/inline_follow_suggestions';
 import { PinnedShowAllButton } from '@/flavours/glitch/features/account_timeline/components/pinned_statuses';
 
-import { StatusQuoteManager } from '../components/status_quoted';
+import { StatusWithComments } from './status_with_comments';
 
 import { LoadGap } from './load_gap';
 import ScrollableList from './scrollable_list';
@@ -80,7 +80,7 @@ export default class StatusList extends ImmutablePureComponent {
           );
         default:
           return (
-            <StatusQuoteManager
+            <StatusWithComments
               key={statusId}
               id={statusId}
               contextType={timelineId}
@@ -99,7 +99,7 @@ export default class StatusList extends ImmutablePureComponent {
           return <PinnedShowAllButton key={TIMELINE_PINNED_VIEW_ALL} />
         }
         return (
-          <StatusQuoteManager
+          <StatusWithComments
             key={`f-${statusId}`}
             id={statusId}
             featured

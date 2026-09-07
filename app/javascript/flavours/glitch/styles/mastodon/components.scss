@@ -1519,6 +1519,49 @@ body > [data-popover-placement] {
   color: var(--color-text-tertiary);
 }
 
+.status-with-comments {
+  border-bottom: 1px solid var(--color-border-primary);
+
+  > .status__wrapper > .status,
+  > .status__wrapper--filtered {
+    border-bottom: 0;
+  }
+}
+
+.status__comments {
+  margin-inline-start: 25px;
+  margin-bottom: 15px;
+  border-inline-start: 1px solid var(--color-border-primary);
+
+  > .load-more {
+    border-bottom: 1px solid var(--color-border-primary);
+  }
+
+  .status__comments {
+    margin-inline-start: 30px;
+    margin-bottom: 0;
+    border-inline-start: 0;
+
+    > .status-with-comments,
+    > .load-more {
+      border-bottom: 0;
+    }
+  }
+
+  .status__content {
+    font-size: 14px;
+    margin: 5px 0;
+  }
+
+  .status__info .status__display-name {
+    align-items: center;
+
+    .display-name__account {
+      display: inline;
+    }
+  }
+}
+
 .status__wrapper--filtered {
   color: var(--color-text-tertiary);
   border: 0;
