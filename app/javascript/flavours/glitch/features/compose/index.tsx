@@ -162,7 +162,7 @@ const Compose: React.FC<{ multiColumn: boolean }> = ({ multiColumn }) => {
             >
               <span className='icon-badge-wrapper'>
                 <Icon id='bell' icon={NotificationsIcon} />
-                {showNotificationsBadge && unreadNotifications && (
+                {showNotificationsBadge && unreadNotifications > 0 && (
                   <div className='icon-badge' />
                 )}
               </span>
