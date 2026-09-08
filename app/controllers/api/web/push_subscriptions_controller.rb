@@ -50,7 +50,7 @@ class Api::Web::PushSubscriptionsController < Api::Web::BaseController
   def default_subscription_data
     {
       policy: 'all',
-      alerts: Notification::TYPES.index_with { alerts_enabled },
+      alerts: Notification::TYPES.index_with { alerts_enabled }.merge('admin.sign_up': false),
     }.deep_stringify_keys
   end
 
