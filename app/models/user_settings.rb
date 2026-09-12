@@ -37,7 +37,7 @@ class UserSettings
     setting :reblog_modal, default: false
     setting :favourite_modal, default: false
     setting :quick_boosting, default: false
-    setting :missing_alt_text_modal, default: true
+    setting :missing_alt_text_modal, default: false
     setting :reduce_motion, default: false
     setting :expand_content_warnings, default: false
     setting :display_media, default: 'default', in: %w(hide_all default show_all)
