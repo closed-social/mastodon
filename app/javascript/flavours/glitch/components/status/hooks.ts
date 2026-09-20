@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react';
+import { createContext, createElement, use, useCallback, useMemo } from 'react';
 
 import { defineMessages, useIntl } from 'react-intl';
 
@@ -12,16 +12,27 @@ import { toggleStatusSpoilers } from '@/flavours/glitch/actions/statuses';
 import { useExpandedStatus } from '@/flavours/glitch/hooks/useStatus';
 import { useToggle } from '@/flavours/glitch/hooks/useToggle';
 import type {
+  AccountStatusShape,
   ExpandedStatusShape,
   StatusShape,
 } from '@/flavours/glitch/models/status';
 import { selectStatusFilters } from '@/flavours/glitch/selectors/filters';
 import { useAppSelector, useAppDispatch } from '@/flavours/glitch/store';
+import type { OnElementHandler } from '@/flavours/glitch/utils/html';
 
 import { FOCUS_TARGET } from '../navigation_focus_target';
 
 import { useElementHandledLink } from './handled_link';
 import type { StatusContextType } from './types';
+
+export const StatusContext = createContext<{
+  id?: string | null;
+  contextType?: StatusContextType;
+}>({});
+
+export function useStatusContext() {
+  return use(StatusContext);
+}
 
 const messages = defineMessages({
   quote_noun: {
@@ -45,7 +56,7 @@ export function useStatusHandlers({
   contextType?: StatusContextType;
   onOpen?: () => void;
 }) {
-  const matchedFilters = useAppSelector((state) =>
+  const { filterAction } = useAppSelector((state) =>
     selectStatusFilters(state, { contextType, statusId: status?.id }),
   );
   const [showDespiteFilter, { onToggle: onFilterToggle }] = useToggle(false);
@@ -54,28 +65,18 @@ export function useStatusHandlers({
   const statusId = status?.id;
 
   // Display handlers
-  const onExpandedToggle = useCallback(() => {
-    dispatch(toggleStatusSpoilers(statusId));
-  }, [dispatch, statusId]);
-
   const onToggleHidden = useCallback(() => {
     if (!status) {
       return;
     }
-    if (!matchedFilters.length || showDespiteFilter) {
+    if (!filterAction || showDespiteFilter) {
       dispatch(toggleStatusSpoilers(status.id));
     }
 
     if (!status.hidden || !status.spoiler_text) {
       onFilterToggle();
     }
-  }, [
-    dispatch,
-    matchedFilters.length,
-    onFilterToggle,
-    showDespiteFilter,
-    status,
-  ]);
+  }, [dispatch, filterAction, onFilterToggle, showDespiteFilter, status]);
 
   // Interaction handlers
   const handlerFactory = useCallback(
@@ -131,18 +132,6 @@ export function useStatusHandlers({
     [onOpenCallback],
   );
 
-  const onHeaderClick: React.MouseEventHandler = useCallback(
-    (event) => {
-      // Only handle clicks on the empty space above the content
-      if (event.target !== event.currentTarget && event.detail >= 1) {
-        return;
-      }
-
-      onOpenClick(event);
-    },
-    [onOpenClick],
-  );
-
   const acct = status?.account.acct;
   const onOpenProfile = useCallback(() => {
     if (acct) {
@@ -186,11 +175,10 @@ export function useStatusHandlers({
 
   return useMemo(
     () => ({
+      isFiltered: !!filterAction,
       showDespiteFilter,
       onOpenClick,
-      onExpandedToggle,
       onFilterToggle,
-      onHeaderClick,
       onMention,
       onOpen: () => {
         onOpenCallback();
@@ -205,10 +193,9 @@ export function useStatusHandlers({
       onTranslate: handlerFactory('translate'),
     }),
     [
+      filterAction,
       handlerFactory,
-      onExpandedToggle,
       onFilterToggle,
-      onHeaderClick,
       onMention,
       onOpenCallback,
       onOpenClick,
@@ -289,3 +276,27 @@ export function useHandlersForStatus(
     hrefToMention,
   });
 }
+
+export const onStatusLinksDisabled: OnElementHandler<AccountStatusShape> = (
+  element,
+  { key, href },
+  children,
+  status,
+) => {
+  // If this is a paragraph with just a link and it matches the card, don't add it.
+  if (
+    element instanceof HTMLParagraphElement &&
+    element.children.length === 1 &&
+    element.firstChild instanceof HTMLAnchorElement &&
+    element.firstChild.href === status.card?.url
+  ) {
+    return null;
+  } else if (element instanceof HTMLAnchorElement) {
+    if (href === status.card?.url) {
+      return null;
+    }
+    // Just use createElement instead of making the whole file JSX.
+    return createElement('strong', { key: key as string }, children);
+  }
+  return undefined;
+};

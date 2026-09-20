@@ -2,21 +2,28 @@ import { useCallback, useEffect } from 'react';
 
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
+import { Link } from 'react-router-dom';
+
 import {
   PenNibIcon,
   HouseIcon,
   MagnifyingGlassIcon,
   RssSimpleIcon,
   BellIcon,
-  ChatCircleIcon,
+  ChatCircleDotsIcon,
   BookmarkSimpleIcon,
+  PlusIcon,
 } from '@phosphor-icons/react';
 
 import { fetchLists } from '@/flavours/glitch/actions/lists';
+import { closeNavigation } from '@/flavours/glitch/actions/navigation';
 import { fetchFollowedHashtags } from '@/flavours/glitch/actions/tags_typed';
+import { Callout } from '@/flavours/glitch/components/callout/redesign';
 import { FOCUS_TARGET } from '@/flavours/glitch/components/navigation_focus_target';
 import { useScrollSensor } from '@/flavours/glitch/hooks/useScrollSensor';
 import { useIdentity } from '@/flavours/glitch/identity_context';
+import { disabledAccountId } from '@/flavours/glitch/initial_state';
+import { transientSingleColumn } from '@/flavours/glitch/is_mobile';
 import { openNewComposer } from '@/flavours/glitch/reducers/slices/composer';
 import { getOrderedLists } from '@/flavours/glitch/selectors/lists';
 import { selectUnreadNotificationGroupsCount } from '@/flavours/glitch/selectors/notifications';
@@ -27,7 +34,7 @@ import { NavigationAccountCardAndMenu } from './account_card_and_menu';
 import { NavigationFooterLinks } from './footer_links';
 import { NavigationHeader } from './header';
 import { ListSection } from './list_section';
-import { LoggedOutInfo } from './logged_out_info';
+import { DisabledAccountBanner, LoggedOutInfo } from './logged_out_info';
 import { NavigationLink } from './navigation_link';
 import classes from './styles.module.scss';
 
@@ -70,10 +77,24 @@ function useFollowedHashtags() {
   return { followedHashtags: tags };
 }
 
+const isFediverseFeedsLinkActive = (
+  match: unknown,
+  { pathname }: { pathname: string },
+) => {
+  return !!match || pathname.startsWith('/public');
+};
+
+const MAX_HASHTAG_COUNT = 5;
+
 export const RedesignNavigationPanel: React.FC<{
   siteName?: string;
+  /**
+   * In 'slide-out' mode (used on smaller viewport sizes), some
+   * menu items are hidden and the design is tweaked slightly
+   */
   mode?: 'static' | 'slide-out';
-}> = ({ siteName, mode = 'static' }) => {
+  multiColumn?: boolean;
+}> = ({ siteName, mode = 'static', multiColumn }) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
   const { signedIn } = useIdentity();
@@ -82,6 +103,7 @@ export const RedesignNavigationPanel: React.FC<{
   );
 
   const openComposer = useCallback(() => {
+    dispatch(closeNavigation());
     dispatch(openNewComposer({ type: 'post' }));
   }, [dispatch]);
 
@@ -109,6 +131,7 @@ export const RedesignNavigationPanel: React.FC<{
       <NavigationHeader siteName={siteName} isStuck={!isScrolledToTop} />
       {signedIn && (
         <>
+          {transientSingleColumn && <TransientSingleColumnCallout />}
           <ul className={classes.list}>
             <NavigationLink
               withSpaceAfter
@@ -140,6 +163,7 @@ export const RedesignNavigationPanel: React.FC<{
               withSpaceAfter
               to='/public/local'
               iconComponent={FediIcon}
+              isActive={isFediverseFeedsLinkActive}
             >
               <FormattedMessage
                 id='tabs_bar.fediverse_feeds'
@@ -147,41 +171,56 @@ export const RedesignNavigationPanel: React.FC<{
               />
             </NavigationLink>
             <ListSection
+              id='custom-feeds'
               title={
                 <FormattedMessage
                   id='tabs_bar.custom_feeds'
                   defaultMessage='Custom Feeds'
                 />
               }
-              action={{
-                label: (
-                  <FormattedMessage
-                    id='tabs_bar.create_custom_feed'
-                    defaultMessage='Create'
-                  />
-                ),
-                link: '/lists/new',
-              }}
               emptyMessage={
-                <FormattedMessage
-                  id='tabs_bar.custom_feeds_empty'
-                  defaultMessage='You have no custom feeds yet.'
-                />
+                <>
+                  <FormattedMessage
+                    id='tabs_bar.custom_feeds_empty'
+                    defaultMessage='You have no custom feeds yet.'
+                  />{' '}
+                  <Link to='/lists/new'>
+                    <FormattedMessage
+                      id='tabs_bar.create_custom_feed'
+                      defaultMessage='Create Feed'
+                    />
+                  </Link>
+                </>
               }
             >
-              {customFeeds.map((feed) => (
-                <NavigationLink
-                  key={feed.id}
-                  to={`/lists/${feed.id}`}
-                  iconComponent={RssSimpleIcon}
-                >
-                  {feed.title}
-                </NavigationLink>
-              ))}
+              {customFeeds.length > 0 && (
+                <>
+                  <NavigationLink
+                    key='new'
+                    to='/lists/new'
+                    iconComponent={PlusIcon}
+                  >
+                    <FormattedMessage
+                      id='tabs_bar.create_custom_feed'
+                      defaultMessage='Create Feed'
+                    />
+                  </NavigationLink>
+                  {customFeeds.map((feed) => (
+                    <NavigationLink
+                      key={feed.id}
+                      to={`/lists/${feed.id}`}
+                      iconComponent={RssSimpleIcon}
+                    >
+                      {feed.title}
+                    </NavigationLink>
+                  ))}
+                </>
+              )}
             </ListSection>
 
             {followedHashtags.length > 0 && (
               <ListSection
+                id='followed-hashtags'
                 title={
                   <FormattedMessage
                     id='tabs_bar.followed_hashtags'
@@ -189,64 +228,95 @@ export const RedesignNavigationPanel: React.FC<{
                   />
                 }
               >
-                {followedHashtags.slice(0, 4).map((tag) => (
+                {followedHashtags.slice(0, MAX_HASHTAG_COUNT).map((tag) => (
                   <NavigationLink key={tag.name} to={`/tags/${tag.name}`}>
                     #{tag.name}
                   </NavigationLink>
                 ))}
-                <NavigationLink key='view-all' to='/followed_tags'>
-                  <FormattedMessage
-                    id='tabs_bar.followed_tags_view_all'
-                    defaultMessage='View all'
-                  />
-                </NavigationLink>
+                {followedHashtags.length > MAX_HASHTAG_COUNT && (
+                  <NavigationLink key='view-all' to='/followed_tags'>
+                    <FormattedMessage
+                      id='tabs_bar.followed_tags_view_all'
+                      defaultMessage='View all'
+                    />
+                  </NavigationLink>
+                )}
               </ListSection>
             )}
           </ul>
           <footer className={classes.footer} data-stuck={!isScrolledToBottom}>
-            <ul className={classes.footerNav}>
-              <NavigationLink
-                stacked
-                to='/notifications'
-                iconComponent={BellIcon}
-                badgeCount={notificationsCount}
-              >
-                <FormattedMessage
-                  id='tabs_bar.notifications'
-                  defaultMessage='Notifications'
-                />
-              </NavigationLink>
-              <NavigationLink
-                stacked
-                to='/conversations'
-                iconComponent={ChatCircleIcon}
-              >
-                <FormattedMessage
-                  id='tabs_bar.messages'
-                  defaultMessage='Messages'
-                  description='Message refers to a direct message. For languages where this is confusing, "chat" or "direct message" can be used.'
-                />
-              </NavigationLink>
-              <NavigationLink
-                stacked
-                to='/bookmarks'
-                iconComponent={BookmarkSimpleIcon}
-              >
-                <FormattedMessage id='tabs_bar.saved' defaultMessage='Saved' />
-              </NavigationLink>
-            </ul>
-            <NavigationAccountCardAndMenu />
-            <NavigationFooterLinks siteName={siteName} />
+            {mode !== 'slide-out' && (
+              <>
+                <ul className={classes.footerNav}>
+                  <NavigationLink
+                    stacked
+                    to='/notifications'
+                    iconComponent={BellIcon}
+                    badgeCount={notificationsCount}
+                  >
+                    <FormattedMessage
+                      id='tabs_bar.notifications'
+                      defaultMessage='Notifications'
+                    />
+                  </NavigationLink>
+                  <NavigationLink
+                    stacked
+                    to='/conversations'
+                    iconComponent={ChatCircleDotsIcon}
+                  >
+                    <FormattedMessage
+                      id='tabs_bar.messages'
+                      defaultMessage='Messages'
+                      description='Message refers to a direct message. For languages where this is confusing, "chat" or "direct message" can be used.'
+                    />
+                  </NavigationLink>
+                  <NavigationLink
+                    stacked
+                    to='/bookmarks'
+                    iconComponent={BookmarkSimpleIcon}
+                  >
+                    <FormattedMessage
+                      id='tabs_bar.saved'
+                      defaultMessage='Saved'
+                    />
+                  </NavigationLink>
+                </ul>
+                <NavigationAccountCardAndMenu />
+              </>
+            )}
+            <NavigationFooterLinks
+              multiColumn={multiColumn}
+              siteName={siteName}
+            />
           </footer>
         </>
       )}
       {!signedIn && (
         <footer className={classes.footer} data-stuck={!isScrolledToBottom}>
-          <LoggedOutInfo />
-          <NavigationFooterLinks siteName={siteName} />
+          {disabledAccountId ? <DisabledAccountBanner /> : <LoggedOutInfo />}
+          <NavigationFooterLinks
+            multiColumn={multiColumn}
+            siteName={siteName}
+          />
         </footer>
       )}
       {bottomSensor}
     </nav>
   );
 };
+
+const TransientSingleColumnCallout: React.FC = () => (
+  <Callout className={classes.callout}>
+    <FormattedMessage
+      id='navigation_bar.opened_in_single_column_layout'
+      defaultMessage='Posts, profiles, and other pages are opened in the single-column layout by default.'
+    />
+    <br />
+    <a href={`/deck${location.pathname}`}>
+      <FormattedMessage
+        id='navigation_bar.advanced_interface'
+        defaultMessage='Open in advanced web interface'
+      />
+    </a>
+  </Callout>
+);

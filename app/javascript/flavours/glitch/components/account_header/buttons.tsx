@@ -3,12 +3,12 @@ import type { FC } from 'react';
 
 import { defineMessages, useIntl } from 'react-intl';
 
-import { useLocation } from 'react-router-dom';
-
 import { followAccount } from '@/flavours/glitch/actions/accounts';
 import { useAccount } from '@/flavours/glitch/hooks/useAccount';
+import { useFollowReference } from '@/flavours/glitch/hooks/useFollowReference';
 import { getAccountHidden } from '@/flavours/glitch/selectors/accounts';
 import { useAppDispatch, useAppSelector } from '@/flavours/glitch/store';
+import { isRedesignEnabled } from '@/flavours/glitch/utils/environment';
 import NotificationsIcon from '@/material-icons/400-24px/notifications.svg?react';
 import NotificationsActiveIcon from '@/material-icons/400-24px/notifications_active-fill.svg?react';
 import ShareIcon from '@/material-icons/400-24px/share.svg?react';
@@ -83,10 +83,8 @@ const AccountButtonsOther: FC<
       });
     }
   }, [accountUrl]);
-  const { state } = useLocation<{
-    reference?: string;
-  } | null>();
-  const reference = state?.reference ?? 'profile';
+
+  const reference = useFollowReference('profile');
 
   if (!account) {
     return null;
@@ -99,8 +97,10 @@ const AccountButtonsOther: FC<
     <>
       {!isMovedAndUnfollowedAccount && (
         <FollowButton
+          compact={isRedesignEnabled()}
           accountId={accountId}
           className={classes.followButton}
+          withUnmute={false}
           labelLength='long'
           reference={reference}
         />

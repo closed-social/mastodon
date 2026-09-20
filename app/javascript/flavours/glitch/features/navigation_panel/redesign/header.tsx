@@ -1,5 +1,6 @@
 import { FormattedMessage } from 'react-intl';
 
+import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 
 import { IconLogo } from '@/flavours/glitch/components/logo';
@@ -13,25 +14,34 @@ export const NavigationHeader: React.FC<{
 }> = ({ siteName, isStuck }) => {
   return (
     <header className={classes.root} data-stuck={isStuck}>
-      <Link to='/' className={classes.siteNameLink}>
-        {customAppIcon && (
-          <img src={customAppIcon} alt='' className={classes.appIcon} />
-        )}
-        <span className={classes.content}>
-          <span className={classes.serverName}>
-            {siteName ?? title ?? domain}
-          </span>
-          <span className={classes.poweredBy}>
-            <FormattedMessage
-              id='navigation_bar.powered_by_closedsocial'
-              defaultMessage='powered by {logo}Closed-social'
-              values={{
-                logo: <IconLogo role='presentation' />,
-              }}
-            />
-          </span>
-        </span>
-      </Link>
+      <LogoLockup siteName={siteName} />
     </header>
+  );
+};
+
+export const LogoLockup: React.FC<{
+  siteName?: string;
+  className?: string;
+}> = ({ siteName, className }) => {
+  return (
+    <Link to='/' className={classNames(classes.siteNameLink, className)}>
+      {customAppIcon && (
+        <img src={customAppIcon} alt='' className={classes.appIcon} />
+      )}
+      <span className={classes.content}>
+        <span className={classes.serverName}>
+          {siteName ?? title ?? domain}
+        </span>
+        <span className={classes.poweredBy}>
+          <FormattedMessage
+            id='navigation_bar.powered_by_closedsocial'
+            defaultMessage='powered by {logo}Closed-social'
+            values={{
+              logo: <IconLogo role='presentation' />,
+            }}
+          />
+        </span>
+      </span>
+    </Link>
   );
 };

@@ -8,7 +8,7 @@ import type { ApiMentionJSON } from '@/flavours/glitch/api_types/statuses';
 import { getCollectionPath } from '@/flavours/glitch/features/collections/utils';
 import { useAppSelector } from '@/flavours/glitch/store';
 import type { OnElementHandler } from '@/flavours/glitch/utils/html';
-import { decode as decodeIDNA } from 'flavours/glitch/utils/idna';
+import { decodeIDNA } from 'flavours/glitch/utils/links';
 
 export interface HandledLinkProps {
   href: string;

@@ -13,6 +13,7 @@ import type {
 
 import { LinkedDisplayName } from '@/flavours/glitch/components/display_name';
 import { AnimateEmojiProvider } from '@/flavours/glitch/components/emoji/context';
+import StatusContent from '@/flavours/glitch/components/status/legacy/content';
 import type { Account } from '@/flavours/glitch/models/account';
 import type { StatusShape } from '@/flavours/glitch/models/status';
 import {
@@ -39,7 +40,6 @@ import { Dropdown } from 'flavours/glitch/components/dropdown_menu';
 import { Hotkeys } from 'flavours/glitch/components/hotkeys';
 import { IconButton } from 'flavours/glitch/components/icon_button';
 import { RelativeTimestamp } from 'flavours/glitch/components/relative_timestamp';
-import StatusContent from 'flavours/glitch/components/status_content';
 import { makeGetStatus } from 'flavours/glitch/selectors';
 
 const messages = defineMessages({

@@ -11,9 +11,9 @@ import type { RootState } from 'flavours/glitch/store';
 import { useAppDispatch, useAppSelector } from 'flavours/glitch/store';
 
 import { LoadMore } from './load_more';
+import type { StatusQuoteManagerProps } from './status/legacy/quoted';
+import { StatusQuoteManager } from './status/legacy/quoted';
 import type { StatusContainerProps } from './status/types';
-import type { StatusQuoteManagerProps } from './status_quoted';
-import { StatusQuoteManager } from './status_quoted';
 
 type StatusSelector = (
   state: RootState,

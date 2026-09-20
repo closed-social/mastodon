@@ -8,7 +8,7 @@ import { withRouter } from 'react-router-dom';
 import { difference } from 'lodash';
 
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import ImmutablePureComponent from 'react-immutable-pure-component';
+import { ImmutablePureComponent } from 'react-immutable-pure-component';
 import { connect } from 'react-redux';
 
 import VisibilityIcon from '@/material-icons/400-24px/visibility.svg?react';
@@ -22,24 +22,24 @@ import { Icon }  from 'mastodon/components/icon';
 import { injectIntl } from '@/mastodon/components/intl';
 import { LoadingIndicator } from 'mastodon/components/loading_indicator';
 import { ScrollContainer } from 'mastodon/containers/scroll_container';
-import BundleColumnError from 'mastodon/features/ui/components/bundle_column_error';
+import { BundleColumnError } from 'mastodon/features/ui/components/bundle_column_error';
 import { identityContextPropShape, withIdentity } from 'mastodon/identity_context';
 import { WithRouterPropTypes } from 'mastodon/utils/react_router';
 
 import {
   unblockAccount,
   unmuteAccount,
-} from '../../actions/accounts';
-import { initBlockModal } from '../../actions/blocks';
+} from '@/mastodon/actions/accounts';
+import { initBlockModal } from '@/mastodon/actions/blocks';
 import {
   replyCompose,
   mentionCompose,
   directCompose,
-} from '../../actions/compose';
+} from '@/mastodon/actions/compose';
 import {
   initDomainBlockModal,
   unblockDomain,
-} from '../../actions/domain_blocks';
+} from '@/mastodon/actions/domain_blocks';
 import {
   toggleFavourite,
   bookmark,
@@ -47,10 +47,10 @@ import {
   toggleReblog,
   pin,
   unpin,
-} from '../../actions/interactions';
-import { openModal } from '../../actions/modal';
-import { initMuteModal } from '../../actions/mutes';
-import { initReport } from '../../actions/reports';
+} from '@/mastodon/actions/interactions';
+import { openModal } from '@/mastodon/actions/modal';
+import { initMuteModal } from '@/mastodon/actions/mutes';
+import { initReport } from '@/mastodon/actions/reports';
 import {
   fetchStatus,
   muteStatus,
@@ -61,12 +61,12 @@ import {
   revealStatus,
   translateStatus,
   undoStatusTranslation,
-} from '../../actions/statuses';
-import { setStatusQuotePolicy } from '../../actions/statuses_typed';
-import { textForScreenReader, defaultMediaVisibility } from '../../components/status';
-import { StatusQuoteManager } from '../../components/status_quoted';
-import { deleteModal } from '../../initial_state';
-import { makeGetStatus, makeGetPictureInPicture } from '../../selectors';
+} from '@/mastodon/actions/statuses';
+import { setStatusQuotePolicy } from '@/mastodon/actions/statuses_typed';
+import { textForScreenReader, defaultMediaVisibility } from '@/mastodon/components/status/legacy/status';
+import { Status as StatusComponent } from '@/mastodon/components/status';
+import { deleteModal } from '@/mastodon/initial_state';
+import { makeGetStatus, makeGetPictureInPicture } from '@/mastodon/selectors';
 import { getAncestorsIds, getDescendantsIds } from 'mastodon/selectors/contexts';
 import { attachFullscreenListener, detachFullscreenListener, isFullscreen } from '../ui/util/fullscreen';
 
@@ -465,7 +465,7 @@ class Status extends ImmutablePureComponent {
     const { params: { statusId } } = this.props;
 
     return list.map((id, i) => (
-      <StatusQuoteManager
+      <StatusComponent
         key={id}
         id={id}
         contextType='thread'
@@ -575,20 +575,30 @@ class Status extends ImmutablePureComponent {
       onTranslate: this.handleHotkeyTranslate,
     };
 
+    const pageTitle = status.get('visibility') === 'direct' ? (
+      <FormattedMessage
+        id='status.title.message'
+        defaultMessage='Message by {name}'
+        values={{
+          name: <DisplayNameSimple account={account} />
+        }}
+      />
+    ) : (
+      <FormattedMessage
+        id='status.title'
+        defaultMessage='Post by {name}'
+        values={{
+          name: <DisplayNameSimple account={account} />
+        }}
+      />
+    );
+
     return (
       <Column bindToDocument={!multiColumn} label={intl.formatMessage(messages.detailedStatus)}>
         {isRedesignEnabled() ? (
           <ColumnHeader
             withBackButton
-            title={
-              <FormattedMessage
-                id='status.title'
-                defaultMessage='Post by {name}'
-                values={{
-                  name: <DisplayNameSimple account={account} />
-                }}
-              />
-            }
+            title={pageTitle}
             extraButtons={
               <ColumnSettingsMenu
                 label={

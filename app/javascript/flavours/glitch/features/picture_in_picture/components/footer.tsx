@@ -4,6 +4,7 @@ import { defineMessages, useIntl } from 'react-intl';
 
 import { useHistory } from 'react-router-dom';
 
+import { BoostButton } from '@/flavours/glitch/components/status/legacy/boost_button';
 import ChatBubbleIcon from '@/material-icons/400-24px/chat_bubble.svg?react';
 import ForumIcon from '@/material-icons/400-24px/forum.svg?react';
 import OpenInNewIcon from '@/material-icons/400-24px/open_in_new.svg?react';
@@ -15,7 +16,6 @@ import {
   HeartIcon,
 } from 'flavours/glitch/components/heart_icon';
 import { IconButton } from 'flavours/glitch/components/icon_button';
-import { BoostButton } from 'flavours/glitch/components/status/boost_button';
 import { useIdentity } from 'flavours/glitch/identity_context';
 import type { Account } from 'flavours/glitch/models/account';
 import type { Status } from 'flavours/glitch/models/status';
