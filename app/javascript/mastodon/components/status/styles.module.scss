@@ -14,20 +14,42 @@
   grid-auto-rows: auto;
   row-gap: var(--space-2);
   padding: var(--space-4);
+  cursor: pointer;
+}
+
+.variantFeed {
+  border-bottom: var(--border-thin);
+}
+
+.variantPage {
+  padding: var(--space-2) var(--space-4);
+  cursor: auto;
 }
 
 .variantThread {
   --avatar-size: 32px;
 
-  padding: var(--space-2) 0;
-}
-
-.variantPage {
   padding: 0;
 }
 
 .isQuote {
   padding: var(--space-3);
+}
+
+.isHighlighted {
+  :global(.no-reduce-motion) & {
+    animation: highlight-fade 0.7s both 0.3s;
+  }
+}
+
+@keyframes highlight-fade {
+  from {
+    background: var(--color-bg-brand-softest);
+  }
+
+  to {
+    background: transparent;
+  }
 }
 
 .isMessage {
@@ -54,10 +76,6 @@
   --content-col: span 2;
 }
 
-.isFiltered {
-  content: '';
-}
-
 .header {
   grid-column: span 2;
 }
@@ -65,9 +83,20 @@
 .spoiler,
 .translate,
 .contentWrapper,
-.contentReadMore,
 .footer {
   grid-column: var(--content-col);
+}
+
+.connectNextReply {
+  &::after {
+    content: '';
+    grid-column: 1;
+    grid-row: 2 / span 2;
+    border-inline-start: var(--bw-thick) solid var(--color-border-primary);
+    width: calc(var(--avatar-size) / 2 - 1px);
+    margin-inline-end: var(--col-gap);
+    justify-self: end;
+  }
 }
 
 .translate {
@@ -82,31 +111,19 @@
   margin-inline-start: auto;
 }
 
-.spoiler {
-  display: flex;
-  align-items: center;
-}
+.contentWrapper {
+  --fade-time: 100ms;
 
-.spoilerContent {
-  @include mixins.type-body-strong;
-
-  font-style: italic;
-  flex-grow: 1;
-}
-
-.contentWrapper,
-.content {
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
   position: relative;
-}
-
-.contentWrapper {
-  --fade-time: 100ms;
-
   overflow: clip;
   border-radius: var(--radius-2);
+
+  &.isFiltered {
+    display: none;
+  }
 
   &::after {
     content: '';
@@ -119,6 +136,9 @@
     background-size: var(--space-2) var(--space-2);
     background-repeat: repeat;
 
+    // Override .media-gallery__item
+    z-index: 2;
+
     // See: https://css-tricks.com/snippets/css/toggle-visibility-when-hiding-elements/
     visibility: hidden;
     opacity: 0;
@@ -127,7 +147,7 @@
       opacity var(--fade-time) ease-in-out;
 
     // Show only if backdrop-filter is unsupported.
-    background-color: var(--color-bg-blend);
+    background-color: var(--color-bg-desktop);
 
     @supports (backdrop-filter: blur(20px)) {
       background-color: transparent;
@@ -135,41 +155,19 @@
     }
   }
 
-  &.isFiltered::after {
-    visibility: visible;
-    opacity: 1;
-    transition:
-      visibility 0s linear 0s,
-      opacity var(--fade-time) ease-in-out;
+  &.hasContentWarning {
+    &::after {
+      visibility: visible;
+      opacity: 1;
+      transition:
+        visibility 0s linear 0s,
+        opacity var(--fade-time) ease-in-out;
+    }
   }
 }
 
-.content {
-  --mask-height: 80px;
-
-  overflow-y: clip;
-
-  &.collapsed {
-    max-height: var(--max-height); // Set via JS.
-    overflow-y: clip;
-    mask-image: linear-gradient(
-      to bottom,
-      black calc(100% - var(--mask-height)),
-      transparent
-    );
-  }
-}
-
-.contentText {
-  @include mixins.type-body;
-
-  p:not(:last-child) {
-    margin-block-end: 1em;
-  }
-
-  a {
-    color: var(--color-text-brand);
-  }
+.variantPage .content {
+  @include mixins.type-body-lg;
 }
 
 .contentImage {
@@ -184,10 +182,6 @@
 .contentBlurHash {
   width: 100%;
   height: 100%;
-}
-
-.contentReadMore {
-  width: max-content;
 }
 
 .hashtagsWrapper,
@@ -217,15 +211,37 @@
 }
 
 .meta {
-  @include mixins.type-micro;
+  @include mixins.type-meta;
 
+  display: flex;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+  justify-content: space-between;
   color: var(--color-text-secondary);
+  padding-block-start: var(--space-2);
+  margin-block-start: var(--space-2);
+  border-block-start: var(--border-default);
+  margin-inline: calc(-1 * var(--space-4));
+  padding-inline: var(--space-4);
+
+  > ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1);
+  }
+
+  li:not(:first-child) {
+    &::before {
+      content: '• ';
+    }
+  }
 
   a {
     color: inherit;
     text-decoration: none;
 
-    &:hover {
+    &:hover,
+    &:hover * {
       text-decoration: underline;
     }
   }

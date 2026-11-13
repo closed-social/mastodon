@@ -5,11 +5,11 @@ module Mastodon
     module_function
 
     def major
-      4
+      5
     end
 
     def minor
-      8
+      0
     end
 
     def patch
@@ -45,7 +45,7 @@ module Mastodon
 
     def api_versions
       {
-        mastodon: 11,
+        mastodon: 12,
         glitch: 1,
       }
     end

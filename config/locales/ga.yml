@@ -229,6 +229,7 @@ ga:
         create_user_role: Cruthaigh Ról
         create_username_block: Cruthaigh Riail Ainm Úsáideora
         demote_user: Ísligh úsáideoir
+        destroy_account: Scrios Sonraí an Chuntais
         destroy_announcement: Scrios Fógra
         destroy_canonical_email_block: Scrios Bloc Ríomhphoist
         destroy_custom_emoji: Scrios Saincheaptha Emoji
@@ -297,6 +298,7 @@ ga:
         create_user_role_html: Chruthaigh %{name} %{target} ról
         create_username_block_html: Chuir %{name} riail leis d'ainmneacha úsáideora ina bhfuil %{target}
         demote_user_html: "%{name} úsáideoir scriosta %{target}"
+        destroy_account_html: Scrios %{name} sonraí cuntais le haghaidh %{target}
         destroy_announcement_html: "%{name} fógra scriosta %{target}"
         destroy_canonical_email_block_html: "%{name} ríomhphost díchoiscthe leis an hash %{target}"
         destroy_collection_html: Bhain %{name} bailiúchán le %{target}
@@ -648,6 +650,11 @@ ga:
         title: Iompórtáil bloic fearainn
       no_file: Níor roghnaíodh aon chomhad
     fasp:
+      capabilities:
+        activation_msg: Cumas curtha i ngníomh go rathúil.
+        deactivation_msg: Díchumasaíodh an cumas go rathúil.
+        disable: Díchumasaigh
+        enable: Cumasaigh
       debug:
         callbacks:
           created_at: Cruthaithe ag
@@ -659,6 +666,7 @@ ga:
         active: Gníomhach
         base_url: Bun-URL
         callback: Glao ar ais
+        capabilities: Cumais
         delete: Scrios
         edit: Cuir Soláthraí in Eagar
         finish_registration: Críochnaigh clárú
@@ -671,8 +679,6 @@ ga:
           description: Fuair ​​tú clárú ó FASP. Diúltaigh é murar chuir tú tús leis seo. Má thionscain tú é seo, déan comparáid chúramach idir an t-ainm agus an eochair-mhéarlorg sula ndearbhaítear an clárúchán.
           reject: Diúltaigh
           title: Deimhnigh Clárú FASP
-        save: Sábháil
-        select_capabilities: Roghnaigh Cumais
         sign_in: Sínigh Isteach
         status: Stádas
         title: Soláthraithe Seirbhíse Cúnta Fediverse
@@ -1029,10 +1035,8 @@ ga:
       discovery:
         follow_recommendations: Lean na moltaí
         preamble: Tá sé ríthábhachtach ábhar suimiúil a chur chun cinn chun úsáideoirí nua a thabhairt isteach ar Mastodon, úsáideoirí nach mbeadh aithne acu ar aon duine. Rialú conas a oibríonn gnéithe éagsúla fionnachtana ar do fhreastalaí.
-        privacy: Príobháideacht
         profile_directory: Eolaire próifíle
         public_timelines: Amlínte poiblí
-        publish_statistics: Staitisticí a fhoilsiú
         title: Fionnachtain
         trends: Treochtaí
         wrapstodon: Wrapstodon
@@ -1040,6 +1044,11 @@ ga:
         all: Do chách
         disabled: Do dhuine ar bith
         users: Chun úsáideoirí áitiúla logáilte isteach
+      external:
+        preamble: Rialaigh an méid eolais faoi do fhreastalaí a roinntear le seirbhísí eile agus cé chomh furasta is atá sé do fhreastalaí a aimsiú.
+        privacy: Príobháideachas
+        publish_statistics: Foilsigh staitisticí
+        title: Fionnachtain Sheachtrach
       feed_access:
         modes:
           authenticated: Úsáideoirí fíordheimhnithe amháin
@@ -1068,7 +1077,15 @@ ga:
         warning_hint: Molaimid úsáid a bhaint as “Faomhadh riachtanach chun clárú” ach amháin má tá tú muiníneach gur féidir le d’fhoireann mhodhnóireachta clárú turscair agus mailíseach a láimhseáil go tráthúil.
       security:
         authorized_fetch: Teastaíonn fíordheimhniú ó fhreastalaithe cónasctha
-        authorized_fetch_hint: Toisc go n-éilítear fíordheimhniú ó fhreastalaithe cónasctha, is féidir bloic ar leibhéal an úsáideora agus ar leibhéal an fhreastalaí araon a fhorfheidhmiú níos déine. Mar sin féin, tagann sé seo ar chostas pionós feidhmíochta, laghdaítear an teacht ar do chuid freagraí, agus d'fhéadfadh saincheisteanna comhoiriúnachta a thabhairt isteach le roinnt seirbhísí cónasctha. Ina theannta sin, ní chuirfidh sé seo cosc ​​ar aisteoirí tiomnaithe do phoist phoiblí agus do chuntais phoiblí a fháil.
+        authorized_fetch_hint: Socraigh cathain a bheidh sé riachtanach do fhfreastalaithe cianda fíordheimhniú a dhéanamh agus ábhar á fháil ón bhfreastalaí seo.
+        authorized_fetch_hints:
+          actors: Trí fhíordheimhniú a éileamh le haghaidh próifílí, is féidir a rianú cé na freastalaithe a d’aimsigh gach ceann de do chuntais áitiúla; laghdaíonn sé seo go mór líon na n-iarratas neamhriachtanach a dhéantar nuair a chuirtear freastalaithe ar an eolas faoi scriosadh cuntais. Bíonn tionchar beag diúltach ag an rogha seo ar an bhfeidhmíocht agus próifílí á seachadadh, mar gheall ar an rianú sin agus ar an bhfíric nach féidir leis an bhfrith-sheachfhreastalaí freagraí ar na hiarratais seo a thaisceadh. D’fhéadfadh fadhbanna comhoiriúnachta le seirbhísí cónasctha áirithe teacht chun cinn dá bharr freisin.
+          all: Chomh maith leis na buntáistí agus na míbhuntáistí a bhaineann le fíordheimhniú a éileamh le haghaidh próifílí, cuireann fíordheimhniú gan choinníoll ó fhreastalaithe cónaidhme ar chumas forfheidhmiú níos déine ar bhloic ar leibhéal an úsáideora agus ar leibhéal an fhreastalaí araon, ach cuireann sé cosc ​​​​ar thaisceadh fhormhór na n-iarratas freisin. Laghdóidh sé raon do fhreagraí freisin, toisc go mbeidh atreorú freagraí díchumasaithe.
+          none: Trí fhíordheimhniú a éileamh ach amháin nuair is gá go hiomlán, is féidir le do sheachfhreastalaí droim ar ais níos mó iarratas a chur i dtaisce. D’fhéadfaí an rogha seo a bhaint amach amach anseo. Ná húsáid é ach amháin má chruthaíonn na roghanna eile fadhbanna.
+        authorized_fetch_modes:
+          actors: Le haghaidh próifílí agus ábhair phríobháidigh
+          all: I gcás gach iarratais
+          none: Le haghaidh ábhair phríobháidigh amháin
         authorized_fetch_overridden_hint: Ní féidir leat an socrú seo a athrú faoi láthair toisc go bhfuil sé sáraithe ag athróg timpeallachta.
         federation_authentication: Forghníomhú fíordheimhnithe Cónaidhm
       title: Socruithe freastalaí
@@ -1586,9 +1603,11 @@ ga:
   deletes:
     challenge_not_passed: Ní raibh an fhaisnéis a d'iontráil tú ceart
     confirm_password: Cuir isteach do phasfhocal reatha chun d'aitheantas a fhíorú
-    confirm_username: Cuir isteach d'ainm úsáideora chun an nós imeachta a dhearbhú
+    confirm_username: Deimhnigh ainm úsáideora
+    confirm_username_hint_html: Clóscríobh <code>%{username}</code> le do thoil chun an cuntas is mian leat a scriosadh a dhearbhú
     proceed: Scrios cuntas
     success_msg: Scriosadh do chuntas go rathúil
+    title: Scrios an cuntas %{acct}
     warning:
       before: 'Sula dtéann tú ar aghaidh, léigh na nótaí seo go cúramach le do thoil:'
       caches: Seans go seasfaidh inneachar atá i dtaisce ag freastalaithe eile
@@ -2276,7 +2295,6 @@ ga:
     appearance: Cuma
     authorized_apps: Aipeanna údaraithe
     back: Ar ais go Mastodon
-    delete: Scriosadh cuntais
     development: Forbairt
     edit_profile: Cuir an phróifíl in eagar
     export: Easpórtáil

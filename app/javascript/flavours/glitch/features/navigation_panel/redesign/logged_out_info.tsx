@@ -8,9 +8,15 @@ import { WarningIcon } from '@phosphor-icons/react';
 
 import { openModal } from '@/flavours/glitch/actions/modal';
 import { fetchServer } from '@/flavours/glitch/actions/server';
+import type { ApiInstanceJSON } from '@/flavours/glitch/api_types/instance';
+import { Avatar } from '@/flavours/glitch/components/avatar';
 import { Button } from '@/flavours/glitch/components/button/redesign';
 import { Callout } from '@/flavours/glitch/components/callout/redesign';
+import { DisplayNameSimple } from '@/flavours/glitch/components/display_name/simple';
+import { LockupLink, LockupWrapper } from '@/flavours/glitch/components/lockup';
+import { ShortNumber } from '@/flavours/glitch/components/short_number';
 import { Skeleton } from '@/flavours/glitch/components/skeleton';
+import { useAccount } from '@/flavours/glitch/hooks/useAccount';
 import {
   disabledAccountId,
   domain,
@@ -55,10 +61,15 @@ export const LoggedOutInfo: React.FC = () => {
 
   return (
     <NavigationFooterLayout
-      description={<p>{serverItem?.description ?? ''}</p>}
+      description={
+        <>
+          <p>{serverItem?.description ?? ''}</p>
+          <ServerMeta serverItem={serverItem} />
+        </>
+      }
       isLoading={isLoading}
     >
-      <Button as='a' href='/auth/sign_up' variant='solid'>
+      <Button as='a' href='/auth/sign_up' variant='solid' color='accent'>
         <FormattedMessage
           id='server_banner.create_account'
           defaultMessage='Create an account'
@@ -68,6 +79,61 @@ export const LoggedOutInfo: React.FC = () => {
         <FormattedMessage id='server_banner.log_in' defaultMessage='Log in' />
       </Button>
     </NavigationFooterLayout>
+  );
+};
+
+const ServerMeta: React.FC<{ serverItem: ApiInstanceJSON | undefined }> = ({
+  serverItem,
+}) => {
+  const adminId = serverItem?.contact.account?.id;
+  const adminAccount = useAccount(adminId);
+  const activeUserCount = serverItem?.usage.users.active_month;
+
+  if (!adminId && !activeUserCount) {
+    return null;
+  }
+
+  return (
+    <dl className={classes.meta}>
+      {adminId && adminAccount && (
+        <div>
+          <dt>
+            <FormattedMessage
+              id='server_banner.administered_by'
+              defaultMessage='Administered by:'
+            />
+          </dt>
+
+          <dd>
+            <LockupWrapper
+              icon={<Avatar account={adminAccount} size={20} />}
+              className={classes.adminLink}
+            >
+              <LockupLink
+                to={`/@${adminAccount.acct}`}
+                data-hover-card-account={adminId}
+                as='span' // changes lockup title element, not link
+              >
+                <DisplayNameSimple account={adminAccount} />
+              </LockupLink>
+            </LockupWrapper>
+          </dd>
+        </div>
+      )}
+      {activeUserCount && (
+        <div>
+          <dt>
+            <FormattedMessage
+              id='server_banner.active_users_title'
+              defaultMessage='Active users'
+            />
+          </dt>
+          <dd>
+            <ShortNumber value={activeUserCount} />
+          </dd>
+        </div>
+      )}
+    </dl>
   );
 };
 
@@ -129,7 +195,7 @@ export const DisabledAccountBanner: React.FC = () => {
         </Callout>
       }
     >
-      <Button as='a' href='/auth/edit' variant='solid'>
+      <Button as='a' href='/auth/edit' variant='solid' color='accent'>
         <FormattedMessage
           id='disabled_account_banner.account_settings'
           defaultMessage='Account settings'
@@ -138,7 +204,7 @@ export const DisabledAccountBanner: React.FC = () => {
       <Button onClick={handleLogOutClick}>
         <FormattedMessage
           id='confirmations.logout.confirm'
-          defaultMessage='Log out'
+          defaultMessage='Sign out'
         />
       </Button>
     </NavigationFooterLayout>

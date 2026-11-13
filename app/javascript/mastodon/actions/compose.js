@@ -1,6 +1,6 @@
 import { defineMessages } from 'react-intl';
 
-import axios from 'axios';
+import { isCancel } from 'axios';
 import { throttle } from 'lodash';
 
 import api from '@/mastodon/api';
@@ -10,6 +10,7 @@ import { tagHistory } from '@/mastodon/settings';
 import { emojiMartSearch } from '@/mastodon/features/emoji/picker';
 
 import { showAlert, showAlertForError } from './alerts';
+import { isStandaloneComposePath } from './compose_path';
 import { emojiUse } from './emojis';
 import { importFetchedAccounts, importFetchedStatus } from './importer';
 import { openModal } from './modal';
@@ -134,18 +135,6 @@ export function replyCompose(status) {
       const text = getState().getIn(['compose', 'text'], '');
       // Preselect any mentions past the first, mirroring the reply text's leading `@user `.
       dispatch(requestComposerFocus({ start: text.search(/\s/) + 1, end: text.length }));
-    }
-  };
-}
-
-export function replyComposeById(statusId) {
-  return (dispatch, getState) => {
-    const state = getState();
-    const status = state.statuses.get(statusId);
-
-    if (status) {
-      const account = state.accounts.get(status.get('account'));
-      dispatch(replyCompose(status.set('account', account)));
     }
   };
 }
@@ -278,7 +267,7 @@ export function submitCompose(successCallback) {
         'Idempotency-Key': getState().getIn(['compose', 'idempotencyKey']),
       },
     }).then(function (response) {
-      if ((browserHistory.location.pathname === '/publish' || browserHistory.location.pathname === '/statuses/new') && window.history.state) {
+      if (isStandaloneComposePath(browserHistory.location.pathname) && window.history.state) {
         browserHistory.goBack();
       }
 
@@ -569,7 +558,7 @@ const fetchComposeSuggestionsAccounts = throttle((dispatch, token) => {
     dispatch(importFetchedAccounts(response.data));
     dispatch(readyComposeSuggestionsAccounts(token, response.data));
   }).catch(error => {
-    if (!axios.isCancel(error)) {
+    if (!isCancel(error)) {
       dispatch(showAlertForError(error));
     }
   }).finally(() => {
@@ -619,7 +608,7 @@ const fetchComposeSuggestionsTags = throttle((dispatch, token) => {
   }).then(({ data }) => {
     dispatch(readyComposeSuggestionsTags(token, data.hashtags));
   }).catch(error => {
-    if (!axios.isCancel(error)) {
+    if (!isCancel(error)) {
       dispatch(showAlertForError(error));
     }
   }).finally(() => {

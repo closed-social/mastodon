@@ -2,6 +2,8 @@ import { useCallback, useEffect } from 'react';
 
 import { useIntl, defineMessages, FormattedMessage } from 'react-intl';
 
+import classNames from 'classnames';
+
 import { Helmet } from '@unhead/react/helmet';
 
 import { Column } from '@/mastodon/components/column';
@@ -26,11 +28,13 @@ import type { Hashtag as HashtagType } from 'mastodon/models/tags';
 import { useAppDispatch, useAppSelector } from 'mastodon/store';
 
 import { CollectionListItem } from '../collections/components/collection_list_item';
+import exploreRedesignClasses from '../explore/redesign.module.scss';
 
 import { SearchSection } from './components/search_section';
 
 const messages = defineMessages({
-  title: { id: 'search_results.title', defaultMessage: 'Search for "{q}"' },
+  searchFor: { id: 'search_results.title', defaultMessage: 'Search for "{q}"' },
+  search: { id: 'navigation_bar.search', defaultMessage: 'Search' },
 });
 
 const INITIAL_PAGE_LIMIT = 10;
@@ -240,7 +244,12 @@ export const SearchResults: React.FC<{ multiColumn: boolean }> = ({
 
   const extraStickyHeaderContent = (
     <>
-      <div className='explore__search-header'>
+      <div
+        className={classNames(
+          'explore__search-header',
+          isRedesignEnabled() && exploreRedesignClasses.searchHeader,
+        )}
+      >
         <Search singleColumn initialValue={trimmedValue} key={trimmedValue} />
       </div>
 
@@ -286,7 +295,9 @@ export const SearchResults: React.FC<{ multiColumn: boolean }> = ({
     </>
   );
 
-  const pageTitle = intl.formatMessage(messages.title, { q });
+  const pageTitle = q
+    ? intl.formatMessage(messages.searchFor, { q })
+    : intl.formatMessage(messages.search);
 
   return (
     <Column bindToDocument={!multiColumn} label={pageTitle}>
@@ -306,7 +317,14 @@ export const SearchResults: React.FC<{ multiColumn: boolean }> = ({
         />
       )}
 
-      <div className='explore__search-results' data-nosnippet>
+      <div
+        className={
+          isRedesignEnabled()
+            ? 'scrollable scrollable--flex'
+            : 'explore__search-results'
+        }
+        data-nosnippet
+      >
         <ScrollableList
           scrollKey='search-results'
           isLoading={isLoading}

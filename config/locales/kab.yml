@@ -339,6 +339,8 @@ kab:
     export_domain_blocks:
       no_file: Ulac afaylu yettwafernen
     fasp:
+      capabilities:
+        enable: Rmed
       debug:
         callbacks:
           delete: Kkes
@@ -354,7 +356,6 @@ kab:
         registrations:
           confirm: Sentem
           reject: Agi
-        save: Sekles
         sign_in: Qqen
         status: Addad
       title: FASP
@@ -513,7 +514,6 @@ kab:
         preamble: Sagen agrudem web n Mastodon.
         title: Udem
       discovery:
-        privacy: Tabaḍnit
         profile_directory: Akaram n imaɣnuten
         title: Asnirem
         trends: Ayen mucaɛen
@@ -522,6 +522,8 @@ kab:
         all: I medden akk
         disabled: Ɣef ula yiwen
         users: Ɣef yimseqdacen idiganen i yeqqnen
+      external:
+        directory: Akaram n uqeddac
       feed_access:
         modes:
           public: Yal yiwen
@@ -777,6 +779,7 @@ kab:
     challenge_not_passed: Ur iṣeḥḥa ara yisalli-nni i teskecmeḍ
     confirm_password: Sekcem awal-ik·im uffir n tura akken ad tesfeqdeḍ tamagit-ik·im
     proceed: Kkes amiḍan
+    title: Kkes amiḍan %{acct}
     warning:
       username_available: Isem-ik·im n useqdac ad yuɣal yella i tikkelt-nniḍen
       username_unavailable: Isem-ik·im n useqdac ad yeqqim ulac-it
@@ -809,6 +812,7 @@ kab:
     confirmations:
       show:
         changed_your_mind: Tbeddleḍ ṛṛay-ik·im?
+    disabled: D arurmid
     inactive: D arurmid
     status: Addad
   emoji_styles:
@@ -1073,7 +1077,6 @@ kab:
     appearance: Udem
     authorized_apps: Isnasen yettussirgen
     back: Uɣal ɣer Maṣṭudun
-    delete: Tukksa n umiḍan
     development: Taneflit
     edit_profile: Ẓreg amaɣnu
     export: Sifeḍ
@@ -1164,6 +1167,8 @@ kab:
   user_mailer:
     appeal_approved:
       action: Iɣewwaṛen n umiḍan
+    sign_in_token:
+      change_password: snifel awal-ik·im n uɛeddi
     suspicious_sign_in:
       change_password: snifel awal-ik·im n uɛeddi
     terms_of_service_changed:

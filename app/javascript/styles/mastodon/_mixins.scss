@@ -114,7 +114,7 @@
 @mixin focus($offset: false) {
   outline: var(--bw-thick) solid var(--color-border-brand);
 
-  @if $offset not false {
+  @if $offset != false {
     outline-offset: var(--bw-thick);
   }
 }
@@ -194,6 +194,12 @@
 /**
  * Utilities
  */
+
+@mixin text-ellipsis {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
 
 @mixin line-clamp($lines) {
   overflow: hidden;

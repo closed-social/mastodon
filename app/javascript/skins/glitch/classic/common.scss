@@ -3,10 +3,16 @@
 // Restore the main Mastodon 4.1 dark colors; map newer surfaces to that palette.
 html[data-color-scheme='dark'],
 html:not([data-color-scheme]) {
+  --base-color-bg: #282c37;
+  --base-color-bg-desktop: #191b22;
+  --base-color-fg: #fff;
+  --base-color-fg-on-accent: #fff;
+  --base-color-accent: #8c8dff;
+  --base-color-danger: var(--color-red-300);
+  --base-highlight-strength: 5%;
   --color-bg-primary: #282c37;
   --color-bg-secondary: #313543;
   --color-bg-tertiary: #393f4f;
-  --color-bg-blend: #191b22;
   --color-bg-highlight: rgb(255 255 255 / 5%);
   --color-text-primary: #fff;
   --color-text-secondary: #9baec8;

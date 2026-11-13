@@ -4,17 +4,11 @@ import { defineMessages, useIntl } from 'react-intl';
 
 import { useHistory } from 'react-router-dom';
 
+import { replyComposeById } from '@/flavours/glitch/actions/compose_typed';
+import { useStatusIcons } from '@/flavours/glitch/components/status/hooks';
 import { BoostButton } from '@/flavours/glitch/components/status/legacy/boost_button';
-import ChatBubbleIcon from '@/material-icons/400-24px/chat_bubble.svg?react';
-import ForumIcon from '@/material-icons/400-24px/forum.svg?react';
 import OpenInNewIcon from '@/material-icons/400-24px/open_in_new.svg?react';
-import { replyCompose } from 'flavours/glitch/actions/compose';
-import { toggleFavourite } from 'flavours/glitch/actions/interactions';
 import { openModal } from 'flavours/glitch/actions/modal';
-import {
-  HeartFillIcon,
-  HeartIcon,
-} from 'flavours/glitch/components/heart_icon';
 import { IconButton } from 'flavours/glitch/components/icon_button';
 import { useIdentity } from 'flavours/glitch/identity_context';
 import type { Account } from 'flavours/glitch/models/account';
@@ -26,24 +20,6 @@ import { useAppSelector, useAppDispatch } from 'flavours/glitch/store';
 const messages = defineMessages({
   reply: { id: 'status.reply', defaultMessage: 'Reply' },
   replyAll: { id: 'status.replyAll', defaultMessage: 'Reply to thread' },
-  reblog: { id: 'status.reblog', defaultMessage: 'Boost' },
-  reblog_private: {
-    id: 'status.reblog_private',
-    defaultMessage: 'Share again with your followers',
-  },
-  cancel_reblog_private: {
-    id: 'status.cancel_reblog_private',
-    defaultMessage: 'Unboost',
-  },
-  cannot_reblog: {
-    id: 'status.cannot_reblog',
-    defaultMessage: 'This post cannot be boosted',
-  },
-  favourite: { id: 'status.favourite', defaultMessage: 'Favorite' },
-  removeFavourite: {
-    id: 'status.remove_favourite',
-    defaultMessage: 'Remove from favorites',
-  },
   open: { id: 'status.open', defaultMessage: 'Expand this status' },
 });
 
@@ -64,9 +40,6 @@ export const Footer: React.FC<{
   const getStatus = useMemo(() => makeGetStatus(), []) as GetStatusSelector;
   const status = useAppSelector((state) => getStatus(state, { id: statusId }));
   const account = status?.get('account') as Account | undefined;
-  const askReplyConfirmation = useAppSelector(
-    (state) => (state.compose.get('text') as string).trim().length !== 0,
-  );
   const showReplyCount = useAppSelector(
     (state) => state.local_settings.get('show_reply_count', false) as boolean,
   );
@@ -79,13 +52,7 @@ export const Footer: React.FC<{
     if (signedIn) {
       onClose(true);
 
-      if (askReplyConfirmation) {
-        dispatch(
-          openModal({ modalType: 'CONFIRM_REPLY', modalProps: { status } }),
-        );
-      } else {
-        dispatch(replyCompose(status));
-      }
+      dispatch(replyComposeById({ statusId: status.get('id') as string }));
     } else {
       dispatch(
         openModal({
@@ -98,31 +65,7 @@ export const Footer: React.FC<{
         }),
       );
     }
-  }, [dispatch, status, signedIn, askReplyConfirmation, onClose]);
-
-  const handleFavouriteClick = useCallback(
-    (e: React.MouseEvent) => {
-      if (!status) {
-        return;
-      }
-
-      if (signedIn) {
-        dispatch(toggleFavourite(status.get('id'), e.shiftKey));
-      } else {
-        dispatch(
-          openModal({
-            modalType: 'INTERACTION',
-            modalProps: {
-              intent: 'favourite',
-              accountId: status.getIn(['account', 'id']),
-              url: status.get('uri'),
-            },
-          }),
-        );
-      }
-    },
-    [dispatch, status, signedIn],
-  );
+  }, [status, signedIn, onClose, dispatch]);
 
   const handleOpenClick = useCallback(
     (e: React.MouseEvent) => {
@@ -137,47 +80,22 @@ export const Footer: React.FC<{
     [history, status, account, onClose],
   );
 
+  const { reply, like } = useStatusIcons(statusId);
+
   if (!status) {
     return null;
   }
-
-  let replyIcon, replyIconComponent, replyTitle;
-
-  if (status.get('in_reply_to_id', null) === null) {
-    replyIcon = 'comment';
-    replyIconComponent = ChatBubbleIcon;
-    replyTitle = intl.formatMessage(messages.reply);
-  } else {
-    replyIcon = 'comments';
-    replyIconComponent = ForumIcon;
-    replyTitle = intl.formatMessage(messages.replyAll);
-  }
-
-  const favouriteTitle = intl.formatMessage(
-    status.get('favourited') ? messages.removeFavourite : messages.favourite,
-  );
 
   return (
     <div className='picture-in-picture__footer'>
       <IconButton
         className='status__action-bar-button'
-        title={replyTitle}
-        icon={
-          status.get('in_reply_to_account_id') ===
-          status.getIn(['account', 'id'])
-            ? 'comment'
-            : replyIcon
-        }
-        iconComponent={
-          status.get('in_reply_to_account_id') ===
-          status.getIn(['account', 'id'])
-            ? ChatBubbleIcon
-            : replyIconComponent
-        }
+        title={reply.title}
+        active={reply.active}
+        icon='comment'
+        iconComponent={reply.icon}
         onClick={handleReplyClick}
-        counter={
-          showReplyCount ? (status.get('replies_count') as number) : undefined
-        }
+        counter={showReplyCount ? reply.counter : undefined}
         obfuscateCount={!showReplyCount}
       />
 
@@ -186,12 +104,12 @@ export const Footer: React.FC<{
       <IconButton
         className='status__action-bar-button star-icon'
         animate
-        active={status.get('favourited') as boolean}
-        title={favouriteTitle}
+        active={like.active}
+        title={like.title}
         icon='heart'
-        iconComponent={status.get('favourited') ? HeartFillIcon : HeartIcon}
-        onClick={handleFavouriteClick}
-        counter={status.get('favourites_count') as number}
+        iconComponent={like.icon}
+        onClick={like.action}
+        counter={like.counter}
       />
 
       {withOpenButton && (

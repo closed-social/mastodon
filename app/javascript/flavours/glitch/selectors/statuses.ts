@@ -21,7 +21,8 @@ export const getStatusList = createAppSelector(
 export const selectPlainStatus = createAppSelector(
   [(state, statusId?: string | null) => state.statuses.get(statusId ?? '')],
   (status) => {
-    if (!status) {
+    // Check for statuses that are just `{isLoading: true}`.
+    if (!status?.get('id')) {
       return null;
     }
     return status.toJS() as unknown as StatusShape;
@@ -84,12 +85,18 @@ export const selectStatusLoadingState = createAppSelector(
       return { state: 'not-found', status: null } as const;
     }
 
-    if (status.isLoading) {
+    if (status.isLoading && !status.id) {
       return { state: 'loading', status: null } as const;
     }
 
     if (filterAction === 'hide') {
       return { state: 'filtered', status: null } as const;
+    }
+
+    // Fetching means we're refreshing data, but already the status object in Redux.
+    // We put this after checking the filter action so we don't accidentally return the status.
+    if (status.isLoading && status.id) {
+      return { state: 'fetching', status } as const;
     }
 
     return { state: 'loaded', status } as const;

@@ -1,10 +1,10 @@
 import { FormattedMessage } from 'react-intl';
 
-import ChatBubbleIcon from '@/material-icons/400-24px/chat_bubble.svg?react';
 import { Icon } from 'flavours/glitch/components/icon';
 import { useAppSelector } from 'flavours/glitch/store';
 
 import { LinkedDisplayName } from '../../display_name';
+import { StatusReplyIcon } from '../icons';
 
 export const StatusThreadLabel: React.FC<{
   accountId: string;
@@ -49,7 +49,7 @@ export const StatusThreadLabel: React.FC<{
   return (
     <div className='status__prepend'>
       <div className='status__prepend__icon'>
-        <Icon id='comment' icon={ChatBubbleIcon} />
+        <Icon id='comment' icon={StatusReplyIcon} />
       </div>
       <span>{label}</span>
     </div>

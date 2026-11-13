@@ -23,10 +23,14 @@ import { FOCUS_TARGET } from '@/mastodon/components/navigation_focus_target';
 import { ComposeRedesignButton } from '@/mastodon/features/compose/redesign/trigger';
 import { useAccount } from '@/mastodon/hooks/useAccount';
 import { useIdentity } from '@/mastodon/identity_context';
-import { selectUnreadNotificationGroupsCount } from '@/mastodon/selectors/notifications';
+import { trendsEnabled } from '@/mastodon/initial_state';
 import { useAppDispatch, useAppSelector } from '@/mastodon/store';
 
-import { RedesignNavigationPanel } from '.';
+import {
+  RedesignNavigationPanel,
+  useNotificationsCount,
+  handleSearchLinkClick,
+} from '.';
 import { AccountMenuItems } from './account_card_and_menu';
 import { LogoLockup } from './header';
 import classes from './mobile_nav.module.scss';
@@ -37,9 +41,7 @@ export const RedesignMobileNavigation: React.FC = () => {
   const { accountId, signedIn } = useIdentity();
   const account = useAccount(accountId);
 
-  const notificationsCount = useAppSelector(
-    selectUnreadNotificationGroupsCount,
-  );
+  const notificationsCount = useNotificationsCount();
 
   const openMobileNav = useCallback(() => {
     dispatch(openNavigation());
@@ -55,10 +57,11 @@ export const RedesignMobileNavigation: React.FC = () => {
             </MobileNavLink>
             <MobileNavLink
               to={{
-                pathname: '/explore',
+                pathname: trendsEnabled ? '/explore' : '/search',
                 state: { focusTarget: FOCUS_TARGET.SEARCH },
               }}
               iconComponent={MagnifyingGlassIcon}
+              onClick={handleSearchLinkClick}
             >
               <FormattedMessage id='tabs_bar.search' defaultMessage='Search' />
             </MobileNavLink>
@@ -116,6 +119,7 @@ export const RedesignMobileNavigation: React.FC = () => {
               as='a'
               href='/auth/sign_up'
               variant='solid'
+              color='accent'
               size='sm'
               className={classes.signUpButton}
             >
@@ -248,6 +252,7 @@ const SlideOutNavigation: React.FC = () => {
       className={classes.slideOutWrapper}
       data-is-open={isOpen}
       ref={overlayRef}
+      inert={!isOpen}
     >
       <animated.div className={classes.slideOut} {...bind()} style={{ x }}>
         <RedesignNavigationPanel mode='slide-out' />

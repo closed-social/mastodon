@@ -11,11 +11,15 @@ import type { Map as ImmutableMap } from 'immutable';
 import { animated, useSpring } from '@react-spring/web';
 import { useDrag } from '@use-gesture/react';
 
+import {
+  StatusBookmarkActiveIcon,
+  StatusBookmarkIcon,
+  StatusLikeActiveIcon,
+  StatusLikeIcon,
+} from '@/flavours/glitch/components/status/icons';
 import { useAccount } from '@/flavours/glitch/hooks/useAccount';
 import AddIcon from '@/material-icons/400-24px/add.svg?react';
 import AlternateEmailIcon from '@/material-icons/400-24px/alternate_email.svg?react';
-import BookmarksActiveIcon from '@/material-icons/400-24px/bookmarks-fill.svg?react';
-import BookmarksIcon from '@/material-icons/400-24px/bookmarks.svg?react';
 import CollectionsActiveIcon from '@/material-icons/400-24px/category-fill.svg?react';
 import CollectionsIcon from '@/material-icons/400-24px/category.svg?react';
 import HomeActiveIcon from '@/material-icons/400-24px/home-fill.svg?react';
@@ -36,10 +40,6 @@ import {
   closeNavigation,
 } from 'flavours/glitch/actions/navigation';
 import { Account } from 'flavours/glitch/components/account';
-import {
-  HeartFillIcon,
-  HeartIcon,
-} from 'flavours/glitch/components/heart_icon';
 import { IconWithBadge } from 'flavours/glitch/components/icon_with_badge';
 import { Search } from 'flavours/glitch/features/compose/components/search';
 import { ColumnLink } from 'flavours/glitch/features/ui/components/column_link';
@@ -372,8 +372,8 @@ export const NavigationPanel: React.FC<{ multiColumn?: boolean }> = ({
                 transparent
                 to='/favourites'
                 icon='heart'
-                iconComponent={HeartIcon}
-                activeIconComponent={HeartFillIcon}
+                iconComponent={StatusLikeIcon}
+                activeIconComponent={StatusLikeActiveIcon}
                 text={intl.formatMessage(messages.favourites)}
               />
             </li>
@@ -382,8 +382,8 @@ export const NavigationPanel: React.FC<{ multiColumn?: boolean }> = ({
                 transparent
                 to='/bookmarks'
                 icon='bookmarks'
-                iconComponent={BookmarksIcon}
-                activeIconComponent={BookmarksActiveIcon}
+                iconComponent={StatusBookmarkIcon}
+                activeIconComponent={StatusBookmarkActiveIcon}
                 text={intl.formatMessage(messages.bookmarks)}
               />
             </li>
