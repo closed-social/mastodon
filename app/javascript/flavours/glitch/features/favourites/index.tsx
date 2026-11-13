@@ -24,10 +24,10 @@ import {
 } from 'flavours/glitch/actions/interactions';
 import { Account } from 'flavours/glitch/components/account';
 import { Column } from 'flavours/glitch/components/column';
-import { HeartFillIcon } from 'flavours/glitch/components/heart_icon';
 import { Icon } from 'flavours/glitch/components/icon';
 import { LoadingIndicator } from 'flavours/glitch/components/loading_indicator';
 import ScrollableList from 'flavours/glitch/components/scrollable_list';
+import { StatusLikeActiveIcon } from 'flavours/glitch/components/status/icons';
 
 const messages = defineMessages({
   title: { id: 'status.likes_title', defaultMessage: 'Post Likes' },
@@ -110,7 +110,7 @@ const Favourites: React.FC<{ multiColumn?: boolean }> = ({ multiColumn }) => {
       ) : (
         <LegacyColumnHeader
           icon='heart'
-          iconComponent={HeartFillIcon}
+          iconComponent={StatusLikeActiveIcon}
           title={intl.formatMessage(messages.heading)}
           scrollTopOnClick
           showBackButton

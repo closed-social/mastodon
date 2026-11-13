@@ -21,7 +21,7 @@ import {
   fetchFavouritedStatuses,
   expandFavouritedStatuses,
 } from 'flavours/glitch/actions/favourites';
-import { HeartFillIcon } from 'flavours/glitch/components/heart_icon';
+import { StatusLikeActiveIcon } from 'flavours/glitch/components/status/icons';
 import StatusList from 'flavours/glitch/components/status_list';
 import { getStatusList } from 'flavours/glitch/selectors';
 import { useAppDispatch, useAppSelector } from 'flavours/glitch/store';
@@ -113,7 +113,7 @@ const Favourites: React.FC<{ columnId: string; multiColumn: boolean }> = ({
       ) : (
         <LegacyColumnHeader
           icon='heart'
-          iconComponent={HeartFillIcon}
+          iconComponent={StatusLikeActiveIcon}
           title={title}
           onPin={handlePin}
           onMove={handleMove}

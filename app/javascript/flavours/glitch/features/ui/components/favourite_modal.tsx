@@ -5,8 +5,8 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import classNames from 'classnames';
 
 import { Button } from 'flavours/glitch/components/button';
-import { HeartIcon } from 'flavours/glitch/components/heart_icon';
 import { Icon } from 'flavours/glitch/components/icon';
+import { StatusLikeIcon } from 'flavours/glitch/components/status/icons';
 import { EmbeddedStatus } from 'flavours/glitch/features/notifications_v2/components/embedded_status';
 import type { Status } from 'flavours/glitch/models/status';
 
@@ -37,7 +37,7 @@ export const FavouriteModal: React.FC<{
       <div className='safety-action-modal__top'>
         <div className='safety-action-modal__header'>
           <div className='safety-action-modal__header__icon'>
-            <Icon icon={HeartIcon} id='heart' />
+            <Icon icon={StatusLikeIcon} id='heart' />
           </div>
 
           <div>
@@ -54,7 +54,7 @@ export const FavouriteModal: React.FC<{
                 values={{
                   combo: (
                     <span className='hotkey-combination'>
-                      <kbd>Shift</kbd>+<Icon id='heart' icon={HeartIcon} />
+                      <kbd>Shift</kbd>+<Icon id='heart' icon={StatusLikeIcon} />
                     </span>
                   ),
                 }}

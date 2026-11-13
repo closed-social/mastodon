@@ -47,7 +47,7 @@ interface StatusActionBarProps {
 export const StatusActionBar: React.FC<StatusActionBarProps> = ({
   statusId,
   withDismiss,
-  withCounters = true,
+  withCounters,
   onlyResponses,
 }) => {
   const status = useAccountStatus(statusId);
