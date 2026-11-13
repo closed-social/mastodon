@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 
 Rails.application.configure do
-  # NEWS_BOT and ANON_ACC are account IDs, not usernames.
-  config.x.news_bot_id = ENV['NEWS_BOT'].presence
+  # ANON_ACC is an account ID, not a username.
   config.x.anon.tag = ENV.fetch('ANON_TAG', '[mask]')
   config.x.anon.acc = ENV['ANON_ACC'].presence
   config.x.anon.namelist = if ENV['ANON_NAME_LIST'].present?
